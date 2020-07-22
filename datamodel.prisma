@@ -1,0 +1,21 @@
+type User{
+    id: ID! @id
+    name: String!
+    email: String! @unique
+    passwordHash: String!
+    phoneNumber: String
+    isLocked: Boolean! @default(value:true)
+    reasonOfLock: ReasonOfLock @relation(link: INLINE)
+    numberOfLoginTrial: Int! @default(value:0)    
+    note: String
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+}
+
+type ReasonOfLock{
+    id: ID! @id
+    value: String! @unique
+    note: String
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+}

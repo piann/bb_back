@@ -1,0 +1,8 @@
+type Mutation{
+    registerAccount(
+    name: String!
+    password: String!
+    email: String!
+    phoneNumber: String!
+    ): Boolean
+}
