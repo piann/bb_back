@@ -13,23 +13,20 @@ export default{
                     email,
                     phoneNumber,
                 } = args;
-                console.log(args);//
                 const existEmail = await prisma.$exists.user({email});
-                console.log(existEmail); //1
                 if(existEmail===true){
                     console.log("This e-mail already exists")
                     return false
                 } else{
-                    console.log(2); //1
+                    
                     const passwordHash = generateSaltedHash(password);
-                    console.log(passwordHash); //1
                     const reasonOfLockForNewAccount = await prisma.reasonOfLock({value:NEW_ACCOUNT});
                     console.log(reasonOfLockForNewAccount);
                     if(reasonOfLockForNewAccount==null){
                         return false;
                     }
 
-                    console.log(2); //1
+                    
                     await prisma.createUser({
                         name,
                         passwordHash,
