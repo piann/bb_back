@@ -2,7 +2,7 @@ import {prisma} from "../../../../generated/prisma-client"
 
 export default{
     Mutation:{
-        allowAccount: async(_, args,{request}) =>{
+        allowAccount: async(_, args:any,{request}):Promise<boolean> =>{
             try{
                 // add routine for check root
 

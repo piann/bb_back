@@ -1,11 +1,11 @@
-import {prisma} from "../../../../generated/prisma-client"
+import {prisma, ReasonOfLock} from "../../../../generated/prisma-client"
 import {generateSaltedHash} from "../../../utils";
 
 const NEW_ACCOUNT = "NEW_ACCOUNT";
 
 export default{
     Mutation:{
-        registerAccount: async(_, args) => {
+        registerAccount: async(_, args:any):Promise<boolean> => {
             try{
                 const {
                     name,
@@ -13,14 +13,14 @@ export default{
                     email,
                     phoneNumber,
                 } = args;
-                const existEmail = await prisma.$exists.user({email});
+                const existEmail:boolean = await prisma.$exists.user({email});
                 if(existEmail===true){
                     console.log("This e-mail already exists")
                     return false
                 } else{
                     
-                    const passwordHash = generateSaltedHash(password);
-                    const reasonOfLockForNewAccount = await prisma.reasonOfLock({value:NEW_ACCOUNT});
+                    const passwordHash:string = generateSaltedHash(password);
+                    const reasonOfLockForNewAccount:ReasonOfLock|null  = await prisma.reasonOfLock({value:NEW_ACCOUNT});
                     console.log(reasonOfLockForNewAccount);
                     if(reasonOfLockForNewAccount==null){
                         return false;

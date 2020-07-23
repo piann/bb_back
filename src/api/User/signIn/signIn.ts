@@ -1,19 +1,25 @@
-import {prisma} from "../../../../generated/prisma-client"
+import {prisma, User} from "../../../../generated/prisma-client"
 import {compareSaltedHash, generateToken} from "../../../utils";
 
 
 const INVALID_MSG = "INVALID";
 const ACCOUNT_LOCKED_MSG = "LOCKED"
 
+interface SignInResponse{
+    ok:Boolean;
+    error:String|null;
+    token:String|null;
+}
+
 export default{
     Mutation:{
-        signIn: async(_, args) =>{
+        signIn: async(_, args:any):Promise<SignInResponse> =>{
             try{
                 const{
                     email,
                     password
                 } = args;
-                const existEmail = await prisma.$exists.user({email});
+                const existEmail:boolean = await prisma.$exists.user({email});
                 if(existEmail===false){
                     console.log("This e-mail doesn't exist");
                     return {
@@ -23,7 +29,7 @@ export default{
                     };
 
                 } else {
-                    const user = await prisma.user({email});
+                    const user:User | null = await prisma.user({email});
                     if(user==null){
                         return {
                             ok:false,
@@ -39,8 +45,8 @@ export default{
                             token:null
                         };
                     } else {
-                        const passwordHash = user.passwordHash;
-                        const isSuccess = compareSaltedHash(password, passwordHash);
+                        const passwordHash:string = user.passwordHash;
+                        const isSuccess:boolean = compareSaltedHash(password, passwordHash);
                         if (isSuccess===true){
                             await prisma.updateUser({data:{numberOfLoginTrial:0},where:{id:user.id}})
                             return {
@@ -50,7 +56,7 @@ export default{
                             }
                         } else {
                             console.log("Wrong password")
-                            const numberOfLoginTrial = (user.numberOfLoginTrial)+1;
+                            const numberOfLoginTrial:number = (user.numberOfLoginTrial)+1;
                             await prisma.updateUser({data:{numberOfLoginTrial},where:{id:user.id}});
                             return {
                                 ok:false,
