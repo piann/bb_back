@@ -16,7 +16,7 @@ const server = new GraphQLServer({schema, context:({request})=>({
 });
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "..","server.log"), { flags: 'a'});
-const fileLogObj = morgan("[:date[clf]] :method :url :status :response-time ms",{
+const fileLogObj = morgan("[:date[clf]] :method :url :status [from > :remote-addr][request > :req[header] :req[body] ] :response-time ms",{
   stream: accessLogStream
 })
 const consoleLogObj = morgan("combined")
