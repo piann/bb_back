@@ -3,8 +3,9 @@ import {prisma} from "../../../../generated/prisma-client"
 export default{
     Mutation:{
         allowAccount: async(_, args:any,{request}):Promise<boolean> =>{
+            // Unlock the account. when user register account, default state is locked state.
             try{
-                // add routine for check root
+                //// add routine for check root
 
                 const {userId} = args;
                 // change lock status & company           
