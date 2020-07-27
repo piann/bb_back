@@ -1,4 +1,6 @@
-import {prisma} from "../../../../generated/prisma-client"
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient()
 
 export default{
     Mutation:{
@@ -9,9 +11,9 @@ export default{
 
                 const {userId} = args;
                 // change lock status & company           
-                await prisma.updateUser({data:{
+                await prisma.user.update({data:{
                     isLocked:false,
-                    reasonOfLock:{disconnect:true},
+                    reasonOfLock:null,
                 }, 
                 where:{id:userId}
                 });

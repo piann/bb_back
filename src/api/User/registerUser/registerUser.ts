@@ -1,7 +1,11 @@
-import {prisma, ReasonOfLock} from "../../../../generated/prisma-client"
+import { PrismaClient } from "@prisma/client";
 import {generateSaltedHash} from "../../../utils";
 
+const prisma = new PrismaClient()
+
 const NEW_ACCOUNT = "NEW_ACCOUNT";
+
+
 
 export default{
     Mutation:{
@@ -14,7 +18,13 @@ export default{
                     email,
                     phoneNumber,
                 } = args;
-                const existEmail:boolean = await prisma.$exists.user({email});
+                const checkUser:number = await prisma.user.count({where:{email}});
+                let existEmail:boolean;
+                if(checkUser>=1){
+                    existEmail=true;
+                }else{
+                    existEmail=false;
+                }
                 if(existEmail===true){
                     // Duplicate account check
                     console.log("This e-mail already exists")
@@ -22,23 +32,20 @@ export default{
                 } else{
                     // Create user with input information and hashed password.
                     const passwordHash:string = generateSaltedHash(password);
-                    const reasonOfLockForNewAccount:ReasonOfLock|null  = await prisma.reasonOfLock({value:NEW_ACCOUNT});
-                    console.log(reasonOfLockForNewAccount);
-                    if(reasonOfLockForNewAccount==null){
-                        return false;
-                    }
+
 
                     
-                    await prisma.createUser({
-                        name,
-                        passwordHash,
-                        email,
-                        phoneNumber,
-                        isLocked:true,
-                        reasonOfLock:{
-                            connect:{id:reasonOfLockForNewAccount.id}
-                        }, 
-                    })
+                    await prisma.user.create({
+                        data: {
+                            name,
+                            passwordHash,
+                            email,
+                            phoneNumber,
+                            isLocked:true,
+                            reasonOfLock:NEW_ACCOUNT
+                        }
+                    });
+
                     return true;
 
                 }

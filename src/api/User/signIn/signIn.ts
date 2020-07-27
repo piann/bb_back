@@ -1,6 +1,7 @@
-import {prisma, User} from "../../../../generated/prisma-client"
+import { PrismaClient,User } from "@prisma/client";
 import {compareSaltedHash, generateToken} from "../../../utils";
 
+const prisma = new PrismaClient()
 
 const INVALID_MSG = "INVALID";
 const ACCOUNT_LOCKED_MSG = "LOCKED"
@@ -20,7 +21,13 @@ export default{
                     email,
                     password
                 } = args;
-                const existEmail:boolean = await prisma.$exists.user({email});
+                const checkUser:number = await prisma.user.count({where:{email}});
+                let existEmail:boolean;
+                if(checkUser>=1){
+                    existEmail=true;
+                }else{
+                    existEmail=false;
+                }
                 if(existEmail===false){
                     // There is no id.
                     console.log("This e-mail doesn't exist");
@@ -31,7 +38,9 @@ export default{
                     };
 
                 } else {
-                    const user:User | null = await prisma.user({email});
+                    const user:User|null = await prisma.user.findOne({
+                        where:{email}
+                    });
                     if(user==null){
                         // Fail to call prisma API.
                         return {
@@ -40,6 +49,8 @@ export default{
                             token:null
                         };
                     }
+
+                    
                     if(user.isLocked===true){
                         // Need to unlock the account.
                         console.log("This account is locked");
@@ -53,7 +64,7 @@ export default{
                         const passwordHash:string = user.passwordHash;
                         const isSuccess:boolean = compareSaltedHash(password, passwordHash);
                         if (isSuccess===true){
-                            await prisma.updateUser({data:{numberOfLoginTrial:0},where:{id:user.id}})
+                            await prisma.user.update({data:{numberOfLoginFail:0},where:{id:user.id}})
                             return {
                                 ok:true,
                                 error:null,
@@ -62,8 +73,8 @@ export default{
                         } else {
                             // Password is wrong.
                             console.log("Wrong password")
-                            const numberOfLoginTrial:number = (user.numberOfLoginTrial)+1;
-                            await prisma.updateUser({data:{numberOfLoginTrial},where:{id:user.id}});
+                            const numberOfLoginFail:number = (user.numberOfLoginFail)+1;
+                            await prisma.user.update({data:{numberOfLoginFail},where:{id:user.id}});
                             return {
                                 ok:false,
                                 error:INVALID_MSG,
@@ -72,6 +83,7 @@ export default{
                         }
                     }
                 }
+            
             }catch(err){
                 console.log(err);
                 return {
