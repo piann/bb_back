@@ -72,16 +72,25 @@ model BusinessInfo{
   id String @id @default(cuid())
   user User @relation(fields: [userId], references: [id])
   userId String
-  companyName String @unique
+  company Company @relation(fields: [companyId], references: [id])
+  companyId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
 }
 
+model Company{
+  id String @id @default(cuid())
+  companyName String @unique
+  webPage String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+}
 
 model BugBountyProgram{
   id String @id @default(cuid())
-  owner User @relation(fields: [ownerId], references: [id])
-  ownerId String
+  ownerCompany User @relation(fields: [ownerCompanyId], references: [id])
+  ownerCompanyId String
+  isPrivate Boolean
   lowPriceMin Int
   lowPriceMax Int
   mediumPriceMin Int
