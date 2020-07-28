@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -32,8 +32,7 @@ enum ResultCode{
   UNABLE_TO_JUDGE
   DUPLICATED
   NOT_VULNERABILITY
-  NOT_TARGET_BOUNTY
-  TARGET_BOUNTY
+
 }
 
 model User{
@@ -113,7 +112,6 @@ model InScopeTarget{
   note String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  reports Report[] @relation(references:[id])
 }
 
 model OutOfScopeTarget{
@@ -150,7 +148,6 @@ model Report{
   id String @id @default(cuid())
   vulnerability Vulnerability @relation(fields: [vulId], references:[id])
   vulId Int
-  target InScopeTarget[] @relation(references:[id])
   // for impact scoring
   attackComplexity Int?
   requiredPriv Int?
@@ -165,13 +162,11 @@ model Report{
   description String
   dump String?
   additionalText String?
-  progressStatus ProgressStatus[]
-  resultCode ResultCode?
+  //progressStatus
+  //resultCode 
   evaluationText String?
-  commentList Comment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  //
 }
 
 model Vulnerability{
@@ -194,21 +189,9 @@ model FileObj{
   updatedAt DateTime @updatedAt @default(now())
 }
 
-model ProgressStatus{
+model ProgressThread{
   id String @id @default(cuid())
-  progressIdx Int @default(value:0)
-  report Report @relation(fields: [reportId],references: [id])
-  reportId String
-  note String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
-}
 
-model Comment{
-  id String @id @default(cuid())
-  report Report @relation(fields: [reportId], references: [id])
-  reportId String
-  note String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
 }
