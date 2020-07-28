@@ -1,10 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, ReasonOfLock, Role } from "@prisma/client";
 import {generateSaltedHash} from "../../../utils";
 
 const prisma = new PrismaClient()
-
-const NEW_ACCOUNT = "NEW_ACCOUNT";
-
 
 
 export default{
@@ -13,7 +10,8 @@ export default{
             // 회원가입
             try{
                 const {
-                    name,
+                    lastName,
+                    firstName,
                     password,
                     email,
                     phoneNumber,
@@ -37,12 +35,14 @@ export default{
                     
                     await prisma.user.create({
                         data: {
-                            name,
+                            lastName,
+                            firstName,
                             passwordHash,
                             email,
                             phoneNumber,
                             isLocked:true,
-                            reasonOfLock:NEW_ACCOUNT
+                            reasonOfLock:ReasonOfLock.NEW_ACCOUNT,
+                            role:Role.HACKER
                         }
                     });
 

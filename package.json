@@ -42,6 +42,7 @@
     "migrate": "npx prisma migrate save --name init --experimental",
     "up": "npx prisma migrate up --experimental",
     "generate": "npx prisma generate",
+    "sync":"yarn migrate && yarn up && yarn generate",
     "dev": "nodemon -L --exec \"ts-node src/server.ts -e ts,graphql\""
   }
 }
