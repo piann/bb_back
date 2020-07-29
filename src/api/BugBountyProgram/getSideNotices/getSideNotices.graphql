@@ -1,0 +1,5 @@
+type Query{
+    getSideNotices(
+    arg1: Boolean
+    ): Boolean
+}

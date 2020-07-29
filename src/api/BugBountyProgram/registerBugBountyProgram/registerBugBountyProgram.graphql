@@ -1,0 +1,5 @@
+type Mutation{
+    registerBugBountyProgram(
+    arg1: Boolean
+    ): Boolean
+}

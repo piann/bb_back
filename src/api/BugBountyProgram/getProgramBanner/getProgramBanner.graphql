@@ -1,0 +1,5 @@
+type Query{
+    getProgramBanner(
+    arg1: Boolean
+    ): Boolean
+}

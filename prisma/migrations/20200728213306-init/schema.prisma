@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -165,17 +165,6 @@ model ReportTip{
   updatedAt DateTime @updatedAt @default(now())
 }
 
-model FileObj{
-  id String @id @default(cuid())
-  isPublic Boolean
-  permittedUserList User[] @relation(references: [id])
-  fileName String
-  mimetype String?
-  rawData String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
-}
-
 model Report{
   id String @id @default(cuid())
   bugBountyProgram BugBountyProgram @relation(fields: [bbpId], references:[id])
@@ -202,8 +191,7 @@ model Report{
   reportFile FileObj? @relation(fields: [fileId], references:[id])
   fileId String?
   progressStatus ProgressStatus[]
-  result ReportResult[]
-  bountyAmount Int @default(value:0)
+  resultCode ResultCode?
   evaluationText String?
   commentList ReportComment[]
   createdAt DateTime @default(now())
@@ -220,19 +208,20 @@ model Vulnerability{
   updatedAt DateTime @updatedAt @default(now())
 }
 
-model ProgressStatus{
+model FileObj{
   id String @id @default(cuid())
-  progressIdx Int @default(value:0)
-  report Report @relation(fields: [reportId],references: [id])
-  reportId String
-  note String?
+  isPublic Boolean
+  permittedUserList User[] @relation(references: [id])
+  fileName String
+  mimetype String?
+  rawData String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
 }
 
-model ReportResult{
+model ProgressStatus{
   id String @id @default(cuid())
-  resultCode ResultCode
+  progressIdx Int @default(value:0)
   report Report @relation(fields: [reportId],references: [id])
   reportId String
   note String?

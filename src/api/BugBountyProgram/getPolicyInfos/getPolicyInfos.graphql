@@ -1,0 +1,5 @@
+type Query{
+    getPoicyInfo(
+    arg1: Boolean
+    ): Boolean
+}

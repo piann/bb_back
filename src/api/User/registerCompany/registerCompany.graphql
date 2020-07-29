@@ -1,0 +1,6 @@
+
+type Mutation{
+    registerCompany(
+    arg1: Boolean
+    ): Boolean
+}

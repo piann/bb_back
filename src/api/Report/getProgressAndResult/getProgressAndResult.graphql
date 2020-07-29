@@ -1,0 +1,6 @@
+# return progressStatus, resultCode, bountyAmounttype Mutation{
+type Qeury{
+    getProgressAndResult(
+    arg1: Boolean
+    ): Boolean
+}

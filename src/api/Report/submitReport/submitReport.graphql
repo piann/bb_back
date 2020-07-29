@@ -1,0 +1,6 @@
+
+type Mutation{
+    submitReport(
+    arg1: Boolean
+    ): Boolean
+}

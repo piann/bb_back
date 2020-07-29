@@ -1,0 +1,6 @@
+
+type Query{
+    getReportComments(
+    arg1: Boolean
+    ): Boolean
+}

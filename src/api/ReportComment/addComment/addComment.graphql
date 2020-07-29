@@ -1,0 +1,6 @@
+
+type Mutation{
+    addComment(
+    arg1: Boolean
+    ): Boolean
+}
