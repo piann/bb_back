@@ -12,10 +12,12 @@
     "@prisma/client": "^2.3.0",
     "@sendgrid/mail": "^6.4.0",
     "@types/bcrypt": "^3.0.0",
+    "@types/graphql-upload": "^8.0.3",
     "@types/passport": "^1.0.4",
     "apollo-server": "^2.15.0",
     "babel-node": "^0.0.1-security",
     "bcrypt": "3.0.6",
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express-async-handler": "^1.1.4",
     "graphql-tools": "^6.0.10",
@@ -42,7 +44,7 @@
     "migrate": "npx prisma migrate save --name init --experimental",
     "up": "npx prisma migrate up --experimental",
     "generate": "npx prisma generate",
-    "sync":"yarn migrate && yarn up && yarn generate",
+    "sync": "yarn migrate && yarn up && yarn generate",
     "dev": "nodemon -L --exec \"ts-node src/server.ts -e ts,graphql\""
   }
 }

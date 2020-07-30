@@ -26,8 +26,7 @@ server.express.use(fileLogObj);
 server.express.use(consoleLogObj);
 server.express.use(authenticateJwt);
 
-
 // run
-server.start({ port: PORT }, () =>
+server.start({ port: PORT}, () =>
   console.log(`✅ Server running on http://localhost:${PORT}`)
 );

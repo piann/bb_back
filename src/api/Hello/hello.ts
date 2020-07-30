@@ -1,3 +1,4 @@
+import fs from "fs";
 
 export default {
     Query:{
@@ -9,5 +10,19 @@ export default {
             console.log(res);
             return "Hello";
         }
-    }
+    },
+    Mutation: {
+        singleUpload: async (_, {file}) => {
+          console.log(file);
+          const { filename, mimetype, encoding, createReadStream } = await file;
+          
+          const readFileStream = createReadStream();
+          const writeFileStream = fs.createWriteStream("test4.png")
+          writeFileStream.write("test");
+          await readFileStream.pipe(writeFileStream);
+
+          const returnFile = { filename, mimetype, encoding };
+          return returnFile;
+        }
+      }
 }

@@ -1,0 +1,8 @@
+
+type Mutation{
+    registerCompany(
+    companyName: String!
+    webPageUrl: String
+    #### add argument file
+    ): Boolean
+}
