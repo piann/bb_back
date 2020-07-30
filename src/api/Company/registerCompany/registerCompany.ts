@@ -15,13 +15,13 @@ export default{
                     companyName,
                     webPageUrl
                 } = args;
-                
-                const existAlready:boolean = ((await prisma.company.count({
+
+                const isCompanyExisting:boolean = ((await prisma.company.count({
                     where:{
                         companyName
                     }
                 })) >= 1)
-                if(existAlready===true){
+                if(isCompanyExisting===true){
                     // if companyName already exist, finish routine
                     return false;
                 }

@@ -1,0 +1,11 @@
+type Mutation{
+    registerAccountForBusiness(
+    lastName: String!
+    firstName: String!
+    nickName: String!
+    password: String!
+    email: String!
+    phoneNumber: String!
+    companyName: String!
+    ): Boolean
+}
