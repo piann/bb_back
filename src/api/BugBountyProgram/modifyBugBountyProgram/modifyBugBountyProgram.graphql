@@ -1,0 +1,25 @@
+type Mutation{
+    modifyBugBountyProgram(
+        bbpId:String!
+        isPrivate:Boolean
+        disclosurePolicy:String
+        isOpen:Boolean
+        # for Datetime
+        openDateYear:Int
+        openDateMonth:Int
+        openDateDay:Int
+        closeDateYear:Int
+        closeDateMonth:Int
+        closeDateDay:Int
+        #
+        lowPriceMin:Int
+        lowPriceMax:Int
+        mediumPriceMin:Int
+        mediumriceMax:Int
+        highPriceMin:Int
+        highriceMax:Int
+        fatalPriceMin:Int
+        fatalPriceMax:Int
+        introduction:String
+    ):Boolean
+}
