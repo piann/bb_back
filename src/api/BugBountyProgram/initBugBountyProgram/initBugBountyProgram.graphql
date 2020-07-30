@@ -1,0 +1,6 @@
+type Mutation{
+    initBugBountyProgram(
+        companyName:String
+        isPrivate:Boolean
+    ): String
+}

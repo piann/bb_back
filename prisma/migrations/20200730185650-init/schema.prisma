@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -94,19 +94,19 @@ model BugBountyProgram{
   ownerCompany Company @relation(fields: [ownerCompanyId], references: [id])
   ownerCompanyId String
   isPrivate Boolean
-  disclosurePolicy String @default(value:"disclosure policy")
+  disclosurePolicy String
   isOpen Boolean @default(value:false)
   openDate DateTime?
   closeDate DateTime?
-  lowPriceMin Int @default(value:0)
-  lowPriceMax Int @default(value:0)
-  mediumPriceMin Int @default(value:0)
-  mediumriceMax Int @default(value:0)
-  highPriceMin Int @default(value:0)
-  highriceMax Int @default(value:0)
-  fatalPriceMin Int @default(value:0)
-  fatalPriceMax Int @default(value:0)
-  introduction String @default(value:"introduction")
+  lowPriceMin Int
+  lowPriceMax Int
+  mediumPriceMin Int
+  mediumriceMax Int
+  highPriceMin Int
+  highriceMax Int
+  fatalPriceMin Int
+  fatalPriceMax Int
+  introduction String
   inScopeList InScopeTarget[]
   outOfScopeList OutOfScopeTarget[]
   exclusionList BountyExclusion[]
