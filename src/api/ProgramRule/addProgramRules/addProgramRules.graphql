@@ -1,5 +1,5 @@
 type Mutation{
-    addProgramRule(
+    addProgramRules(
         valueList:[String]
     ):Boolean
 }

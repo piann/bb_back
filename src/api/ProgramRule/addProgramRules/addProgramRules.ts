@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 export default{
     Mutation:{
-        addProgramRule: async(_, args:any,{request}):Promise<boolean> =>{
+        addProgramRules: async(_, args:any,{request}):Promise<boolean> =>{
             try{
                 //// add routine for check root
 
