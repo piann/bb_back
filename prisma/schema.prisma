@@ -128,7 +128,7 @@ model ProgramRule{
   updatedAt DateTime @updatedAt @default(now())
 }
 
-model ProgramRuleConnBugBounty{
+model ProgramRuleConnBugBountyProgram{
   id String @id @default(cuid())
   programRule ProgramRule @relation(fields: [pId], references: [id])
   pId Int
