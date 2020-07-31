@@ -1,0 +1,7 @@
+type Mutation{
+    registerInScopeList(
+        inScopeTargetStringList:[String]
+        # inScopeTarget format : TYPE>address
+        bbpId:String!
+    ): Boolean
+}
