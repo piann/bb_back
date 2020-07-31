@@ -10,7 +10,7 @@ export default{
 
                 const {bId, pIdList} = args;
                 for(const pId of pIdList){
-                    await prisma.programRuleConnBugBounty.create({
+                    await prisma.programRuleConnBugBountyProgram.create({
                         data:{
                             programRule:{
                                 connect:{id:pId}
