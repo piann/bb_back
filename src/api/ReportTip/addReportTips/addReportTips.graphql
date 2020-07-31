@@ -1,0 +1,5 @@
+type Mutation{
+    addReportTips(
+        valueList:[String]
+    ):Boolean
+}

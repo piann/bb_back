@@ -1,0 +1,6 @@
+type Mutation{
+    registerReportTipsToProgram(
+        rIdList:[Int]
+        bId:String
+    ):Boolean
+}
