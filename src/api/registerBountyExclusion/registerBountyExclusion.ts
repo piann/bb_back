@@ -2,29 +2,20 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
-interface registerInScopeListArgs{
-    inScopeTargetStringList:[string];
-    bbpId:string;
-}
 
 export default{
     Mutation:{
-        registerInScopeList: async(_, args:registerInScopeListArgs,{request}):Promise<boolean> =>{
+        registerBountyExclusion: async(_, args:any,{request}):Promise<boolean> =>{
             try{
                 //// add routine for check root
-
-                // note that inScopeTarget format is "TYPE>address"
                 const {
-                    inScopeTargetStringList,
+                    bountyExclusionList,
                     bbpId
                 } = args;
 
-                for(var targetInfo of inScopeTargetStringList){
-                    const type:any= targetInfo.slice(0,targetInfo.indexOf(">"));
-                    const value:string = targetInfo.slice(targetInfo.indexOf(">")+1);
-                    await prisma.inScopeTarget.create({
+                for(var value of bountyExclusionList){
+                    await prisma.bountyExclusion.create({
                         data:{
-                            type,
                             value,
                             bugBountyProgram:{
                                 connect:{id:bbpId}
@@ -33,8 +24,6 @@ export default{
                         }
                     })
                 }
-
-
                 return true;
             }catch(err){
                 console.log(err);

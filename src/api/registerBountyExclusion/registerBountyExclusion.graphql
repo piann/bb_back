@@ -1,0 +1,6 @@
+type Mutation{
+    registerBountyExclusion(
+        bountyExclusionList:[String]
+        bbpId:String!
+    ): Boolean
+}
