@@ -1,0 +1,20 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "FileCategory",
+      "values": [
+        "REPORT",
+        "OTHERS"
+      ]
+    },
+    {
+      "tag": "CreateField",
+      "model": "FileObj",
+      "field": "category",
+      "type": "FileCategory",
+      "arity": "Optional"
+    }
+  ]
+}
