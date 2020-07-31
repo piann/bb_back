@@ -1,0 +1,6 @@
+type Mutation{
+    registerProgramRulesToProgram(
+        pIdList:[Int]
+        bId:String
+    ):Boolean
+}
