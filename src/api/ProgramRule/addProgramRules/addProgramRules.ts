@@ -8,13 +8,14 @@ export default{
             try{
                 //// add routine for check root
 
-                const {value} = args;
-
-                await prisma.programRule.create({
-                    data:{
-                        value
-                    }
-                });
+                const {valueList} = args;
+                for (const value of valueList){
+                    await prisma.programRule.create({
+                        data:{
+                            value
+                        }
+                    });
+                }
                 
                 return true;
             }catch(err){
