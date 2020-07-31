@@ -1,0 +1,7 @@
+type Mutation{
+    registerOutOfScopeList(
+        outOfScopeTargetStringList:[String]
+        # OutOfScopeTarget format : TYPE>address
+        bbpId:String!
+    ): Boolean
+}
