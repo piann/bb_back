@@ -13,6 +13,7 @@ export default{
 
                 const {
                     companyName,
+                    nameId,
                     webPageUrl
                 } = args;
 
@@ -25,6 +26,16 @@ export default{
                     // if companyName already exist, finish routine
                     return false;
                 }
+                const isNameIdExisting:boolean = ((await prisma.company.count({
+                    where:{
+                        nameId
+                    }
+                })) >= 1)
+                if(isNameIdExisting===true){
+                    // if companyName already exist, finish routine
+                    return false;
+                }
+
                 //// add logic for upload logo and return logoId
                 const fileObj:FileObj = await prisma.fileObj.create({
                     data:{
@@ -38,6 +49,7 @@ export default{
                 await prisma.company.create({
                     data:{
                         companyName,
+                        nameId,
                         webPageUrl,
                         logo:{
                             connect:{id:logoId}

@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -87,7 +87,7 @@ model BusinessInfo{
 model Company{
   id String @id @default(cuid())
   companyName String @unique
-  nameId String @unique // only lower case
+  nameId String? // only lower case
   webPageUrl String?
   logo FileObj? @relation(fields: [logoId], references: [id])
   logoId String?
