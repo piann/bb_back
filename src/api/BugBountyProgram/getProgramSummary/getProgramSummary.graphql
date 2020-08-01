@@ -1,5 +1,0 @@
-type Query{
-    getProgramSummary(
-    arg1: Boolean
-    ): Boolean
-}

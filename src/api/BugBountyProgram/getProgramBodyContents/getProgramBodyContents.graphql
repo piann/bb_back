@@ -1,0 +1,31 @@
+scalar Datetime
+
+type scopeTargetResponse{
+    type:String
+    value:String
+}
+
+type getProgramBodyContentsResponse{
+    disclosurePolicy:String!
+    introduction:String!
+    openDate:Datetime
+    closeDate:Datetime
+    lowPriceMin:Int!
+    lowPriceMax:Int!
+    mediumPriceMin:Int!
+    mediumriceMax:Int!
+    highPriceMin:Int!
+    highriceMax:Int!
+    fatalPriceMin:Int!
+    fatalPriceMax:Int!
+    inScopeTargetList:[scopeTargetResponse]
+    outOfScopeTargetList:[scopeTargetResponse]
+    exclusionValueList:[String]
+}
+
+
+type Query{
+    getProgramBodyContents(
+        bbpId:String!
+    ):getProgramBodyContentsResponse
+}
