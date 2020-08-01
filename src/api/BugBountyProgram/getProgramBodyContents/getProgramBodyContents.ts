@@ -10,7 +10,7 @@ interface scopeTargetResponse{
 
 interface getProgramBodyContentsResponse{
     introduction:String;
-    disclosurePolicy:String;
+    disclosurePolicy:String|null;
     openDate:Date|null;
     closeDate:Date|null;
     lowPriceMin:Number;
@@ -22,8 +22,8 @@ interface getProgramBodyContentsResponse{
     fatalPriceMin:Number;
     fatalPriceMax:Number;
     inScopeTargetList:[scopeTargetResponse];
-    outOfScopeTargetList:[scopeTargetResponse];
-    exclusionValueList:[String];
+    outOfScopeTargetList:[scopeTargetResponse]|null;
+    exclusionValueList:[String]|null;
 }
 
 

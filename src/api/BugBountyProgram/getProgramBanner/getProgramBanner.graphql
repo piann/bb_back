@@ -1,5 +1,16 @@
+type getProgramBannerResponse{
+    isPrivate:Boolean
+    companyName:String
+    description:String
+    webPageUrl:String
+    submittedReportCount:Int!
+    bountyMin:Int!
+    bountyMax:Int!
+    logoUrl:String
+}
+
 type Query{
     getProgramBanner(
-    arg1: Boolean
-    ): Boolean
+    bbpId:String!
+    ): getProgramBannerResponse
 }
