@@ -1,5 +1,0 @@
-type Query{
-    getReportPage(
-    arg1: Boolean
-    ): Boolean
-}

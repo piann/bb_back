@@ -1,0 +1,10 @@
+scalar DateTime
+
+type Vulnerability{
+  id:Int!
+  category:String!
+  name:String!
+  note:String
+  createdAt:DateTime
+  updatedAt:DateTime
+}

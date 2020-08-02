@@ -1,0 +1,19 @@
+type scopeTargetResponse{
+    type:String
+    value:String
+}
+
+type getReportReadyPageResponse{
+    reportTipList:[String]
+    vulnerabilityList:[Vulnerability]
+    openDate:DateTime
+    closeDate:DateTime
+    inScopeTargetList:[scopeTargetResponse]
+}
+
+
+type Query{
+    getReportReadyPage(
+        bbpId:String!
+    ): getReportReadyPageResponse
+}
