@@ -1,14 +1,7 @@
-//import { isAuthenticated } from "../../../middleware";
-//import { PrismaClient } from "@prisma/client";
+import { isAuthenticated } from "../../../middleware";
+import { PrismaClient, BugBountyProgram, Report } from "@prisma/client";
 
-//const prisma = new PrismaClient()
-
-/*
-interface collaboratorInfo{
-    userId:String;
-    contributionRatio:Number;
-}
-*/
+const prisma = new PrismaClient()
 
 
 export default{
@@ -16,16 +9,18 @@ export default{
         submitReport: async(_, args:any,{request}):Promise<string|null> =>{
             try{
                 // check if user is login
-
-                /*
+                
                 const isAuth:boolean = isAuthenticated(request);
                 if(isAuth===false){
                     // non login user is forbidden to access
                     return null
                 }
-                const { user:{id:uid} } = request;
-                
 
+                
+                const { user:{id:uId} } = request;
+                
+                
+                console.log(uId)////
 
                 const { bbpId } = args;
                 const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
@@ -39,7 +34,6 @@ export default{
 
                 const isPrivate = bugBountyProgramObj.isPrivate;
                 
-
                 //  if it is private, check user is permitted
                 if(isPrivate===true){
 
@@ -49,7 +43,7 @@ export default{
                                 id:bbpId
                             },
                             permittedUser:{
-                                id:uid
+                                id:uId
                             }
 
                         }
@@ -61,20 +55,96 @@ export default{
 
                 }
 
-                */
+                
                 // main routine
 
-                console.log("test1")
+                const {
+                    targetId,
+                    vId,
+                    attackComplexity,
+                    requiredPriv,
+                    userInteraction,
+                    confidentiality,
+                    integrity,
+                    availablity,
+                    title,
+                    location,
+                    enviroment,
+                    description,
+                    dump,
+                    additionalText,
+                } = args;
+
+                //// if target is not 'others'
+                if(targetId !== -1){
+
+                    
+                    // check if target id is not for this program
+                    const isTargetInProgram:boolean = (await prisma.inScopeTarget.count({
+                        where:{
+                            id:targetId,
+                            bugBountyProgram:{id:bbpId},
+                        }
+                    }) >= 1 )
+                    if(isTargetInProgram===false){
+                        return null;
+                    }
+                }
+
+                
+                const reportObj:Report = await prisma.report.create({
+                    data:{
+                        author:{connect:{id:uId}},
+                        vulnerability:{connect:{id:vId}},
+                        attackComplexity,
+                        requiredPriv,
+                        userInteraction,
+                        confidentiality,
+                        integrity,
+                        availablity,
+                        title,
+                        location,
+                        enviroment,
+                        description,
+                        dump,
+                        additionalText,
+                        bugBountyProgram:{connect:{id:bbpId}},
+                        
+                    }
+                });
+
+
+                const rId = reportObj.id
+                 //// if target is not 'others', add target
+                if(targetId !== -1){
+                    await prisma.report.update({
+                        data:{
+                            target:{connect:{id:targetId}}
+                        },
+                        where:{
+                            id:rId
+                        }
+                    })
+                }
+
+                // create collaborator information
+                //// add check logic if user is HACKER
+                //// add check logic if user is duplicated
+
                 const {collaboratorInfoList} = args;
                 for (const collaboratorInfo of collaboratorInfoList){
                     const uId = collaboratorInfo.userId;
                     const cRatio = collaboratorInfo.contributionRatio;
-                    console.log(uId, cRatio);///
+                    await prisma.collaboratorInfo.create({
+                        data:{
+                            user:{connect:{id:uId}},
+                            contributionRatio:cRatio,
+                            report:{connect:{id:rId}}
+                        }
+                    })
                 }
-                console.log("test2")
-
-                ////reportId
-                return "";
+                
+                return rId;
             }catch(err){
                 console.log(err);
                 return null;
