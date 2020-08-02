@@ -23,6 +23,15 @@ export default{
         getReportReadyPage: async(_, args:any,{request }):Promise<getReportReadyPageResponse|null> => {
             try{
 
+
+                // non login user is forbidden to access
+                const isAuth:boolean = isAuthenticated(request);
+                if(isAuth===false){
+                    return null
+                }
+                const { user:{id} } = request;
+
+                //
                 const { bbpId } = args;
                 const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
                     where:{
@@ -38,12 +47,7 @@ export default{
 
                 //  if it is private, check user is permitted
                 if(isPrivate===true){
-                    const isAuth:boolean = isAuthenticated(request);
-                    if(isAuth===false){
-                        // non login user is forbidden to access
-                        return null
-                    }
-                    const { user:{id} } = request;
+
                     const isUserInPrivateProgram:boolean = ( await prisma.privateProgramConnUser.count({
                         where:{
                             bugBountyProgram:{
@@ -58,7 +62,6 @@ export default{
                     if(isUserInPrivateProgram===false){
                         return null
                     }
-
 
                 }
 
