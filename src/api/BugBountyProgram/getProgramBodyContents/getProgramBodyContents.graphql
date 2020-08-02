@@ -1,5 +1,3 @@
-scalar Datetime
-
 type scopeTargetResponse{
     type:String
     value:String
@@ -8,8 +6,9 @@ type scopeTargetResponse{
 type getProgramBodyContentsResponse{
     disclosurePolicy:String!
     introduction:String!
-    openDate:Datetime
-    closeDate:Datetime
+    ruleValueList:[String]
+    openDate:DateTime
+    closeDate:DateTime
     lowPriceMin:Int!
     lowPriceMax:Int!
     mediumPriceMin:Int!

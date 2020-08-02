@@ -11,6 +11,7 @@ interface scopeTargetResponse{
 interface getProgramBodyContentsResponse{
     introduction:String;
     disclosurePolicy:String|null;
+    ruleValueList:[String];
     openDate:Date|null;
     closeDate:Date|null;
     lowPriceMin:Number;
@@ -95,7 +96,7 @@ export default{
                         bugBountyProgram:{id:bbpId}
                     }
                 });
-                let ruleValueList:[string?]|undefined = [];
+                let ruleValueList = [] as any;
                 for (const ruleConnObj of ruleConnObjList){
                     const pId:number = ruleConnObj.pId; 
                     const ruleObj:ProgramRule|null = await prisma.programRule.findOne({
@@ -160,6 +161,7 @@ export default{
                 return {
                     disclosurePolicy,
                     introduction,
+                    ruleValueList,
                     openDate,
                     closeDate,
                     lowPriceMin,
