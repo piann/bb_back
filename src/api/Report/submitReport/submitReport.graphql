@@ -1,6 +1,26 @@
+input collaboratorInfo{
+    userId:String!
+    contributionRatio:Int
+}
+
 
 type Mutation{
     submitReport(
-    arg1: Boolean
-    ): Boolean
+    bbpId:String!
+    targetId:Int!
+    vId:Int!
+    attackComplexity:Int
+    requiredPriv:Int
+    userInteraction:Int
+    confidentiality:Int
+    integrity:Int
+    availablity:Int
+    title:String
+    location:String
+    enviroment:String
+    description:String!
+    dump:String
+    additionalText:String
+    collaboratorInfoList:[collaboratorInfo]
+    ): String
 }
