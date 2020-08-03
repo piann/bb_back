@@ -12,12 +12,12 @@ export default{
 
                 //// for test, no authorization
                 /*
-                // only ADMIN can widely public file
                 const userObj:User|null = await prisma.user.findOne({
                     where:{id:userId}
                 })
-
-                // no authorization
+                
+                
+                // only ADMIN can write widely public file
                 if( userObj==null || userObj.role!==Role.ADMIN){
                     console.log("forbidden access")
                     return null;
