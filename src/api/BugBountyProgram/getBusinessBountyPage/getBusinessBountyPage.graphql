@@ -1,0 +1,24 @@
+type reportInfo{
+    reportId:String!
+    status:String!
+    result:String
+    authorNickName:String
+}
+
+type getBusinessBountyPageResponse{
+    submittedReportCount:Int!
+    totalVulnerabilityCount:Int!
+    rewardedVulnerabilityCount:Int!
+    totalReward:Int!
+    closeDate:DateTime
+    openDate:DateTime
+    firstReportDate:DateTime
+    recentReportDate:DateTime
+    reportInfoList:[reportInfo]
+}
+
+type Query{
+    getBusinessBountyPage(
+        bbpId:String!
+    ):getBusinessBountyPageResponse
+}
