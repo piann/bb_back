@@ -143,7 +143,15 @@ export default{
                         }
                     })
                 }
-                
+    
+                // create progressStatus
+                // 0 : stand by 1: in progress 2: in discussion 3: resolved
+                await prisma.progressStatus.create({
+                    data:{
+                        report:{connect:{id:rId}},
+                    }
+                });
+
                 return rId;
             }catch(err){
                 console.log(err);
