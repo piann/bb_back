@@ -1,0 +1,17 @@
+type reportInfo{
+    reportId:String!
+    status:String!
+    result:String
+    companyName:String
+}
+
+type getMyPageResponse{
+    email:String!
+    nickName:String!
+    profilePictureId:String
+    reportInfoList:[reportInfo]
+}
+
+type Query{
+    getMyPage:getMyPageResponse
+}
