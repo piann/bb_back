@@ -1,0 +1,7 @@
+type Mutation{
+    addFileObj(
+        userId:String
+        fileName:String!
+    ):String
+}
+
