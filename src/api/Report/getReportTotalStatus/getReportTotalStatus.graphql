@@ -1,0 +1,20 @@
+type commentInfo{
+    id:String!
+    content:String!
+    writerNickName:String!
+    fileId:String
+}
+
+type getReportTotalStatusResponse{
+    authorNickName:String
+    progressStatus:Int!
+    resultCode:String
+    bountyAmount:Int
+    commentInfoList:[commentInfo]
+}
+
+type Query{
+    getReportTotalStatus(
+        rId: String!
+    ):getReportTotalStatusResponse
+}
