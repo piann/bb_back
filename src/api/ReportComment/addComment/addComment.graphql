@@ -1,6 +1,8 @@
 
 type Mutation{
     addComment(
-    arg1: Boolean
-    ): Boolean
+        content:String!
+        rId:String!
+        fileId:String
+    ): String
 }
