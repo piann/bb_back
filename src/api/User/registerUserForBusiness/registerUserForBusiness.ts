@@ -10,7 +10,7 @@ export default{
             // 관리자에서 등록해주기
             // 임시비밀번호 만들어주고 추후 패스워드 바꿀 수 있게 기능추가
             try{
-                // add logic for checking ADMIN
+                //// add logic for checking ADMIN
                 const {
                     lastName,
                     firstName,

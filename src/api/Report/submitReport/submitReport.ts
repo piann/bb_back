@@ -92,6 +92,7 @@ export default{
                 // create collaborator information
                 //// add check logic if user is HACKER
                 //// add check logic if user is duplicated
+                ///// add check length of collabo list
 
                 const {collaboratorInfoList} = args;
                 for (const collaboratorInfo of collaboratorInfoList){

@@ -46,7 +46,6 @@ export default{
                     closeDate,
                     } = bugBountyProgramObj;
 
-                    console.log(openDate, closeDate);////
                 //// add routine for checking open date and close data  
 
                 // main logic

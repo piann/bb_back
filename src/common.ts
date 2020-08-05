@@ -36,8 +36,9 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
             });
             const role = user?.role;
     
-
-           if(role===Role.HACKER){
+            if(role === Role.ADMIN){
+                return true;
+            }else if(role===Role.HACKER){
                
                 const isUserInPrivateProgram:boolean = ( await prisma.privateProgramConnUser.count({
                     where:{
@@ -52,6 +53,8 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                 }) >= 1)
                 if(isUserInPrivateProgram===false){
                     return false;
+                }else{
+                    return true;
                 }
 
            } else if (role===Role.BUSINESS){
@@ -64,11 +67,13 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                 if(bbpCompanyId !== businessInfoObj?.companyId){
                     console.log("other company program. access denied");
                     return false;
+                } else {
+                    return true;
                 }
            }
 
         }
-        return true
+        return false;
 
     }catch(err){
         console.log(err);
