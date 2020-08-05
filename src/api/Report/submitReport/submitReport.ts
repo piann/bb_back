@@ -1,5 +1,5 @@
-import { isAuthenticated } from "../../../middleware";
-import { PrismaClient, BugBountyProgram, Report } from "@prisma/client";
+import { checkUserHasPermissionInBBP } from "../../../common";
+import { PrismaClient, Report } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
@@ -9,51 +9,13 @@ export default{
         submitReport: async(_, args:any,{request}):Promise<string|null> =>{
             try{
                 // check if user is login
-                
-                const isAuth:boolean = isAuthenticated(request);
-                if(isAuth===false){
-                    // non login user is forbidden to access
-                    return null
+                const {bbpId} = args;
+                if(await checkUserHasPermissionInBBP(request,bbpId)!==true){
+                    return null;
                 }
-
                 
                 const { user:{id:uId} } = request;
                 
-                
-                console.log(uId)////
-
-                const { bbpId } = args;
-                const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
-                    where:{
-                        id:bbpId
-                    }
-                });
-                if(bugBountyProgramObj===null){
-                    return null
-                }
-
-                const isPrivate = bugBountyProgramObj.isPrivate;
-                
-                //  if it is private, check user is permitted
-                if(isPrivate===true){
-
-                    const isUserInPrivateProgram:boolean = ( await prisma.privateProgramConnUser.count({
-                        where:{
-                            bugBountyProgram:{
-                                id:bbpId
-                            },
-                            permittedUser:{
-                                id:uId
-                            }
-
-                        }
-                    }) >= 1)
-                    if(isUserInPrivateProgram===false){
-                        return null
-                    }
-
-
-                }
 
                 
                 // main routine

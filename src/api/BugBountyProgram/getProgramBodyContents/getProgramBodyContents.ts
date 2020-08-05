@@ -1,4 +1,4 @@
-import { isAuthenticated } from "../../../middleware";
+import { checkUserHasPermissionInBBP } from "../../../common";
 import { PrismaClient, BugBountyProgram, ProgramRule, InScopeTarget } from "@prisma/client";
 
 const prisma = new PrismaClient()
@@ -34,42 +34,20 @@ export default{
             try{
 
                 const { bbpId } = args;
+
+                if(await checkUserHasPermissionInBBP(request,bbpId)!==true){
+                    return null;
+                }
+
                 const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
                     where:{
                         id:bbpId
                     }
                 });
                 if(bugBountyProgramObj===null){
-                    return null
+                    return null;
                 }
 
-                const isPrivate = bugBountyProgramObj.isPrivate;
-                
-
-                //  if it is private, check user is permitted
-                if(isPrivate===true){
-                    const isAuth:boolean = isAuthenticated(request);
-                    if(isAuth===false){
-                        // non login user is forbidden to access
-                        return null
-                    }
-                    const { user:{id} } = request;
-                    const isUserInPrivateProgram:boolean = ( await prisma.privateProgramConnUser.count({
-                        where:{
-                            bugBountyProgram:{
-                                id:bbpId
-                            },
-                            permittedUser:{
-                                id
-                            }
-
-                        }
-                    }) >= 1)
-                    if(isUserInPrivateProgram===false){
-                        return null
-                    }
-
-                }
 
                 // for getting time info
                 const {

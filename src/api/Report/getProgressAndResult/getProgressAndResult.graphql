@@ -1,6 +1,0 @@
-# return progressStatus, resultCode, bountyAmounttype Mutation{
-type Query{
-    getProgressAndResult(
-    arg1: Boolean
-    ): Boolean
-}

@@ -1,5 +1,5 @@
-import { isAuthenticated } from "../../../middleware";
-import { PrismaClient, Role, ReportComment } from "@prisma/client";
+import { checkUserHasPermissionReport } from "../../../common";
+import { PrismaClient, ReportComment } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
@@ -16,53 +16,16 @@ export default{
                     fileId
                 } = args;
 
-                const isAuth:boolean = isAuthenticated(request);
-                if(isAuth===false){
-                    // non login user is forbidden to access
-                    return null
-                }
-
                 
                 const {
                      user:{
                         id:uId,
-                        role
                         } 
                     } = request;
                 
-                if(role!==Role.ADMIN){
-
-                    const reportObj = await prisma.report.findOne({
-                        where:{id:rId}
-                    });
-                    const authorId =reportObj?.authorId;
-                    if(authorId!==uId){
-                        // if not author, find in collaboratorList
-                        const collaboratorObjList = await prisma.collaboratorInfo.findMany({
-                            where:{
-                                report:{id:rId}
-                            },
-                            select:{
-                                user:{
-                                    select:{
-                                        id:true
-                                    }
-                                }
-                            }
-                        });
-                        let collaboUserIdList = [] as any;
-                        for (const collaboObj of collaboratorObjList){
-                            collaboUserIdList.push(collaboObj.user.id);
-                        }
-                        const isCollaborator = collaboUserIdList.includes(uId);
-                        if(isCollaborator===false){
-                            return null;
-                        }
-
-                    }
-
+                if(await checkUserHasPermissionReport(request, rId)!==true){
+                    return null;
                 }
-                //// add logic for checking business user
 
                 let reportCommentObj:ReportComment|null = null;
                 // main routine
