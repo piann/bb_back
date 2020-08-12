@@ -10,8 +10,7 @@ export default{
             // 회원가입
             try{
                 const {
-                    lastName,
-                    firstName,
+                    realName,
                     nickName,
                     password,
                     email,
@@ -50,8 +49,7 @@ export default{
                 
                 const createdUser:User = await prisma.user.create({
                     data: {
-                        lastName,
-                        firstName,
+                        realName,
                         nickName,
                         passwordHash,
                         email,

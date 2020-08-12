@@ -1,7 +1,6 @@
 type Mutation{
     registerAccountForBusiness(
-    lastName: String!
-    firstName: String!
+    realName: String
     nickName: String!
     password: String!
     email: String!
