@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { generateToken } from "src/utils";
+import { generateToken } from "../../../utils";
 
 const prisma = new PrismaClient()
 
@@ -32,7 +32,11 @@ export default{
                 }
 
                 if(userList.length > 1){
-                    throw new Error("Collision in AuthSecret");
+                    return{
+                        ok:false,
+                        error:"Collision in AuthSecret",
+                        token:null
+                    }
                 }
                 const userId = userList[0].id
 
@@ -54,7 +58,7 @@ export default{
                 console.log(err);
                 return {
                     ok:false,
-                    error:err,
+                    error:"Invalid Access",
                     token:null
                 }
             }

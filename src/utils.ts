@@ -56,7 +56,6 @@ export const sendEmail = async ({
                 expires: 3600
             }
         });
-        console.log(transporter);
         
         await transporter.sendMail({
             // 보내는 곳의 이름과, 메일 주소를 입력

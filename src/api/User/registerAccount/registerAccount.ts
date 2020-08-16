@@ -54,14 +54,14 @@ export default{
 
                 }
                 
-                console.log("testtesttest");
                 
                 // Create user with input information and hashed password.
                 const passwordHash:string = generateSaltedHash(password);
 
-                const randomHex = crypto.randomBytes(24).toString('hex');
+                const randomHex1 = crypto.randomBytes(14).toString('hex');
                 const uHex = crypto.createHmac('md5',"@emailHash").update(email).digest('hex');
-                const authSecret = randomHex + uHex;
+                const randomHex2 = crypto.randomBytes(14).toString('hex');
+                const authSecret = randomHex1 + uHex + randomHex2;
 
                 const createdUser:User = await prisma.user.create({
                     data: {
@@ -91,7 +91,7 @@ export default{
                     email,
                     authSecret
                 })
-                console.log("Send mail result : ",mailResult);
+                console.log("Send mail result : ",mailResult);////
 
                 return true;
 

@@ -7,7 +7,6 @@ import "./passport";
 import { authenticateJwt } from "./passport";
 import {isAuthenticated} from "./middleware";
 import fs from "fs";
-//import {sendEmail} from "./utils";
 
 // init
 const PORT:number|string = process.env.PORT || 4000;
@@ -26,8 +25,6 @@ const consoleLogObj = morgan("combined")
 server.express.use(fileLogObj);
 server.express.use(consoleLogObj);
 server.express.use(authenticateJwt);
-
-
 
 
 // run
