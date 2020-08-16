@@ -5,6 +5,7 @@ const prisma = new PrismaClient()
 
 const INVALID_MSG = "INVALID";
 const ACCOUNT_LOCKED_MSG = "LOCKED"
+const NEW_ACCOUNT = "NEW_ACCOUNT";
 
 interface SignInResponse{
     ok:Boolean;
@@ -53,6 +54,13 @@ export default{
                     
                     if(user.isLocked===true){
                         // Need to unlock the account.
+                        if(user.reasonOfLock==NEW_ACCOUNT){
+                            return {
+                                ok:false,
+                                error:NEW_ACCOUNT,
+                                token:null
+                            }
+                        }
                         console.log("This account is locked");
                         return {
                             ok:false,

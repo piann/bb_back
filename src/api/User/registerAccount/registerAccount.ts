@@ -1,7 +1,10 @@
 import { PrismaClient, ReasonOfLock, Role, User } from "@prisma/client";
-import {generateSaltedHash} from "../../../utils";
+import {generateSaltedHash, checkEmailChars, checkOnlyNormalChars, sendAuthSecretMail} from "../../../utils";
+import crypto from "crypto";
+
 
 const prisma = new PrismaClient()
+
 
 
 export default{
@@ -16,6 +19,14 @@ export default{
                     email,
                     phoneNumber,
                 } = args;
+
+                const isEmailRightFormat:boolean = checkEmailChars(email);
+                const isIdRightFormat:boolean = checkOnlyNormalChars(nickName);
+                
+                if(isEmailRightFormat===false || isIdRightFormat===false){
+                    return false;
+                }
+
                 const isEmailExisting:boolean = (await prisma.user.count({
                     where:{
                         email
@@ -34,19 +45,24 @@ export default{
                         nickName
                     }
                 }) >=1 );
-                
+
+
                 if(isNickNameExisting===true){
                     // // Duplicate nickName check
                     console.log("This nickName already exists")
-                    return false
+                    return false;
 
                 }
                 
+                console.log("testtesttest");
                 
                 // Create user with input information and hashed password.
                 const passwordHash:string = generateSaltedHash(password);
 
-                
+                const randomHex = crypto.randomBytes(24).toString('hex');
+                const uHex = crypto.createHmac('md5',"@emailHash").update(email).digest('hex');
+                const authSecret = randomHex + uHex;
+
                 const createdUser:User = await prisma.user.create({
                     data: {
                         realName,
@@ -56,8 +72,8 @@ export default{
                         phoneNumber,
                         isLocked:true,
                         reasonOfLock:ReasonOfLock.NEW_ACCOUNT,
-                        role:Role.HACKER
-                        
+                        role:Role.HACKER,
+                        authSecret
                     }
                 });
 
@@ -70,6 +86,12 @@ export default{
                         }
                     }
                 });
+
+                const mailResult = await sendAuthSecretMail({
+                    email,
+                    authSecret
+                })
+                console.log("Send mail result : ",mailResult);
 
                 return true;
 
