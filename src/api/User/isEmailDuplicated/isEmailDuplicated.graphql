@@ -1,0 +1,5 @@
+type Query{
+    isEmailDuplicated(
+        email:String!
+    ):Boolean
+}
