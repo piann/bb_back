@@ -1,11 +1,9 @@
 import { PrismaClient, ReasonOfLock, Role, User } from "@prisma/client";
-import {generateSaltedHash, checkEmailChars, checkOnlyNormalChars, sendAuthSecretMail} from "../../../utils";
+import {generateSaltedHash, checkEmailChars, checkOnlyLowerNormalChars, sendAuthSecretMail} from "../../../utils";
 import crypto from "crypto";
 
 
 const prisma = new PrismaClient()
-
-
 
 export default{
     Mutation:{
@@ -21,9 +19,9 @@ export default{
                 } = args;
 
                 const isEmailRightFormat:boolean = checkEmailChars(email);
-                const isIdRightFormat:boolean = checkOnlyNormalChars(nickName);
+                const isIdRightFormat:boolean = checkOnlyLowerNormalChars(nickName);
                 
-                if(isEmailRightFormat===false || isIdRightFormat===false){
+                if(isEmailRightFormat===false || isIdRightFormat===false || nickName.length < 3 || password.length < 8 ){
                     return false;
                 }
 
@@ -89,6 +87,7 @@ export default{
 
                 const mailResult = await sendAuthSecretMail({
                     email,
+                    nickName,
                     authSecret
                 })
                 console.log("Send mail result : ",mailResult);////

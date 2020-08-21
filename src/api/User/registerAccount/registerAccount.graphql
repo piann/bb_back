@@ -4,6 +4,6 @@ type Mutation{
     nickName: String!
     password: String!
     email: String!
-    phoneNumber: String!
+    phoneNumber: String
     ): Boolean
 }

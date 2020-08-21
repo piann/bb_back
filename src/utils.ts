@@ -80,11 +80,13 @@ export const sendEmail = async ({
 
 interface authSecretArgs{
     email:string;
+    nickName:string;
     authSecret:string;
 }
 
 export const sendAuthSecretMail = async ({
     email,
+    nickName,
     authSecret
 }:authSecretArgs):Promise<boolean> => {
 
@@ -92,7 +94,7 @@ export const sendAuthSecretMail = async ({
         fromInfo:"zerowhale team <no-reply>",
         toEmail:email,
         title:"Confirm your zerowhale account",
-        content:makeAuthEmail({email, authSecret}),
+        content:makeAuthEmail({email, nickName, authSecret}),
     });
     return result;      
 }
@@ -125,11 +127,11 @@ export const checkComplexPassword = (target:string):boolean => {
 
 export const makeAuthEmail = ({
     email,
+    nickName,
     authSecret
 })=>{
 
-    const mailName = email.split("@")[0]
-    const linkAddress = `http://${authSecret}`;
+    const linkAddress = `https://zerowhale.io/confirm_secret/${authSecret}`;
     const authEmailContent = `
     <table
     width="100%"
@@ -204,7 +206,7 @@ export const makeAuthEmail = ({
                         line-height: 24px;
                       "
                     >
-                      Welcome <b>${mailName}</b>
+                      Welcome <b>${nickName}</b>
                     </p>
   
                     <p
