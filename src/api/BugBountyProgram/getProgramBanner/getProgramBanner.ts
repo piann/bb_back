@@ -19,9 +19,9 @@ export default{
             try{
                 // check permission
                 let { nameId, bbpId } = args;
-
+                
                 if(bbpId==undefined && nameId!==undefined){
-                    bbpId = getBBPIdByNameId(nameId);
+                    bbpId = await getBBPIdByNameId(nameId);
                 }
 
                 if(await checkUserHasPermissionInBBP(request,bbpId)!==true){
