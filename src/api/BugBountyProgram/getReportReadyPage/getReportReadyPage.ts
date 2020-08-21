@@ -1,4 +1,4 @@
-import { checkUserHasPermissionInBBP } from "../../../common";
+import { checkUserHasPermissionInBBP, getBBPIdByNameId } from "../../../common";
 import { PrismaClient, BugBountyProgram, Vulnerability, ReportTip, InScopeTarget } from "@prisma/client";
 
 const prisma = new PrismaClient()
@@ -22,9 +22,12 @@ export default{
     Query:{
         getReportReadyPage: async(_, args:any,{request }):Promise<getReportReadyPageResponse|null> => {
             try{
-
+       
+                let { nameId, bbpId } = args;
                 
-                const { bbpId } = args;
+                if(bbpId==undefined && nameId!==undefined){
+                    bbpId = await getBBPIdByNameId(nameId);
+                }
 
                 if(await checkUserHasPermissionInBBP(request,bbpId)!==true){
                     return null;

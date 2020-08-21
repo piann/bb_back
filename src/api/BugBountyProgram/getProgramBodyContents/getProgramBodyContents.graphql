@@ -25,6 +25,7 @@ type getProgramBodyContentsResponse{
 
 type Query{
     getProgramBodyContents(
-        bbpId:String!
+        bbpId:String
+        nameId:String
     ):getProgramBodyContentsResponse
 }

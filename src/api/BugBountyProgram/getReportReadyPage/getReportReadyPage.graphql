@@ -14,6 +14,7 @@ type getReportReadyPageResponse{
 
 type Query{
     getReportReadyPage(
-        bbpId:String!
+        bbpId:String
+        nameId:String
     ): getReportReadyPageResponse
 }
