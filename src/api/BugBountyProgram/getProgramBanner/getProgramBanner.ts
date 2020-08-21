@@ -1,5 +1,5 @@
 import { PrismaClient, BugBountyProgram } from "@prisma/client";
-import { checkUserHasPermissionInBBP } from "../../../common";
+import { checkUserHasPermissionInBBP, getBBPIdByNameId } from "../../../common";
 const prisma = new PrismaClient()
 
 interface getProgramBannerResponse{
@@ -18,7 +18,11 @@ export default{
         getProgramBanner: async(_, args:any,{request}):Promise<getProgramBannerResponse|null> => {
             try{
                 // check permission
-                const { bbpId } = args;
+                let { nameId, bbpId } = args;
+
+                if(bbpId==undefined && nameId!==undefined){
+                    bbpId = getBBPIdByNameId(nameId);
+                }
 
                 if(await checkUserHasPermissionInBBP(request,bbpId)!==true){
                     return null;

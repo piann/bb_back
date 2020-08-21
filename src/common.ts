@@ -182,3 +182,17 @@ export const checkUserHasPermissionReport = async (request:any, rId:string):Prom
         return null;
     }
 }
+
+
+export const getBBPIdByNameId = async ({
+    nameId
+}) => {
+    const bbpList = await prisma.bugBountyProgram.findMany({
+        where:{
+            ownerCompany:{
+                nameId
+            }
+        }
+    });
+    return bbpList[0].id;
+}

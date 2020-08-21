@@ -11,6 +11,7 @@ type getProgramBannerResponse{
 
 type Query{
     getProgramBanner(
-    bbpId:String!
+    bbpId:String
+    nameId:String
     ): getProgramBannerResponse
 }
