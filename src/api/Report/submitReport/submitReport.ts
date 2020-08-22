@@ -1,4 +1,4 @@
-import { checkUserHasPermissionInBBP } from "../../../common";
+import { checkUserHasPermissionInBBP, getBBPIdByNameId } from "../../../common";
 import { PrismaClient, Report } from "@prisma/client";
 
 const prisma = new PrismaClient()
@@ -9,7 +9,12 @@ export default{
         submitReport: async(_, args:any,{request}):Promise<string|null> =>{
             try{
                 // check if user is login
-                const {bbpId} = args;
+                let { nameId, bbpId } = args;
+                
+                if(bbpId==undefined && nameId!==undefined){
+                    bbpId = await getBBPIdByNameId(nameId);
+                }
+
                 if(await checkUserHasPermissionInBBP(request,bbpId)!==true){
                     return null;
                 }

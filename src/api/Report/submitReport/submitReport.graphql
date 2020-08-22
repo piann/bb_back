@@ -6,7 +6,8 @@ input collaboratorInfo{
 
 type Mutation{
     submitReport(
-    bbpId:String!
+    bbpId:String
+    nameId:String
     targetId:Int! # if target is -1, target is "others"
     vId:Int!
     attackComplexity:Int
