@@ -1,10 +1,12 @@
 type scopeTargetResponse{
+    id:Int
     type:String
     value:String
 }
 
 type getReportReadyPageResponse{
     reportTipList:[String]
+    disclosurePolicy:String
     vulnerabilityList:[Vulnerability]
     openDate:DateTime
     closeDate:DateTime

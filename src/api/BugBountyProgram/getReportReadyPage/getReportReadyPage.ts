@@ -5,6 +5,7 @@ const prisma = new PrismaClient()
 
 
 interface scopeTargetResponse{
+    id:number;
     type:String;
     value:String;
 }
@@ -86,7 +87,8 @@ export default{
 
                 let inScopeTargetList=[] as any;
                 for (const inScopeTargetFullObj of inScopeTargetFullObjList){
-                    const infoDict = {type:"",value:""};
+                    const infoDict = {id:-1,type:"",value:""};
+                    infoDict.id = inScopeTargetFullObj.id;
                     infoDict.type = inScopeTargetFullObj.type;
                     infoDict.value = inScopeTargetFullObj.value;
                     inScopeTargetList.push(infoDict);
