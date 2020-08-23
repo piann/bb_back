@@ -10,6 +10,7 @@ type getBusinessBountyPageResponse{
     totalVulnerabilityCount:Int!
     rewardedVulnerabilityCount:Int!
     totalReward:Int!
+    joinedHackerCount:Int!
     closeDate:DateTime
     openDate:DateTime
     firstReportDate:DateTime
@@ -19,6 +20,7 @@ type getBusinessBountyPageResponse{
 
 type Query{
     getBusinessBountyPage(
-        bbpId:String!
+        bbpId:String
+        nameId:String
     ):getBusinessBountyPageResponse
 }

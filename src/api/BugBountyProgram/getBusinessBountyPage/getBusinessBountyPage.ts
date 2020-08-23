@@ -1,5 +1,6 @@
 import { isAuthenticated } from "../../../middleware";
 import { PrismaClient, BugBountyProgram, Role, ResultCode } from "@prisma/client";
+import { getBBPIdByNameId } from "../../../common";
 
 const prisma = new PrismaClient()
 
@@ -16,6 +17,7 @@ interface getBusinessBountyPageResponse{
     totalVulnerabilityCount:Number;
     rewardedVulnerabilityCount:Number;
     totalReward:Number;
+    joinedHackerCount:Number;
     closeDate:Date|null;
     openDate:Date|null;
     firstReportDate:Date|null;
@@ -29,7 +31,12 @@ export default{
         getBusinessBountyPage: async(_, args:any,{request }):Promise<getBusinessBountyPageResponse|null> => {
             try{
 
-                const { bbpId } = args;
+                let { nameId, bbpId } = args;
+                
+                if(bbpId==undefined && nameId!==undefined){
+                    bbpId = await getBBPIdByNameId(nameId);
+                }
+
                 const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
                     where:{
                         id:bbpId
@@ -95,10 +102,11 @@ export default{
                 let totalReward:number = 0;
                 let totalVulnerabilityCount:number = 0;
                 let rewardedVulnerabilityCount:number = 0;
+                let joinedHackerIdList = [] as any;
                 for (const submittedReport of submittedReportList){
                     totalReward += submittedReport.bountyAmount;
 
-
+                    joinedHackerIdList.push(submittedReport.authorId);
 
                     // 1. get Recent ProgressStatus
                     const progressStatusObjList = await prisma.progressStatus.findMany({
@@ -192,13 +200,15 @@ export default{
                     });
 
                 }
+                const uJoinedHackerIdList = Array.from(new Set(joinedHackerIdList))
+                const joinedHackerCount= uJoinedHackerIdList.length;
 
-
-               return {
+                return {
                     submittedReportCount,
                     totalVulnerabilityCount,
                     rewardedVulnerabilityCount,
                     totalReward,
+                    joinedHackerCount,
                     openDate,
                     closeDate,
                     firstReportDate,
