@@ -17,6 +17,10 @@ export default{
 
                 const {authSecret} = args;
 
+                if(authSecret===undefined || authSecret===null){
+                    throw new Error("Invalid Access");
+                }
+
                 const userList = await prisma.user.findMany({
                     where:{
                         authSecret

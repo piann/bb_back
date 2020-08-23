@@ -100,16 +100,19 @@ export default{
                 ///// add check length of collabo list
 
                 const {collaboratorInfoList} = args;
-                for (const collaboratorInfo of collaboratorInfoList){
-                    const uId = collaboratorInfo.userId;
-                    const cRatio = collaboratorInfo.contributionRatio;
-                    await prisma.collaboratorInfo.create({
-                        data:{
-                            user:{connect:{id:uId}},
-                            contributionRatio:cRatio,
-                            report:{connect:{id:rId}}
-                        }
-                    })
+                if(collaboratorInfoList!==undefined){
+
+                    for (const collaboratorInfo of collaboratorInfoList){
+                        const uId = collaboratorInfo.userId;
+                        const cRatio = collaboratorInfo.contributionRatio;
+                        await prisma.collaboratorInfo.create({
+                            data:{
+                                user:{connect:{id:uId}},
+                                contributionRatio:cRatio,
+                                report:{connect:{id:rId}}
+                            }
+                        })
+                    }
                 }
     
                 // create progressStatus

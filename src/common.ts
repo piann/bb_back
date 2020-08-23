@@ -184,9 +184,12 @@ export const checkUserHasPermissionReport = async (request:any, rId:string):Prom
 }
 
 
-export const getBBPIdByNameId = async ({
+export const getBBPIdByNameId = async (
     nameId
-}) => {
+) => {
+    if(nameId===undefined){
+        return null;
+    }
     try{
 
         const bbpList = await prisma.bugBountyProgram.findMany({
@@ -196,6 +199,7 @@ export const getBBPIdByNameId = async ({
                 }
             }
         });
+        console.log(bbpList);////
         return bbpList[0].id;
     }catch(err){
         console.log(err);
