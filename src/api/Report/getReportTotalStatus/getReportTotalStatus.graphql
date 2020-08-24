@@ -2,10 +2,12 @@ type commentInfo{
     id:String!
     content:String!
     writerNickName:String!
+    profilePicId:String
     fileId:String
 }
 
 type getReportTotalStatusResponse{
+    nameId:String
     authorNickName:String
     progressStatus:Int!
     resultCode:String

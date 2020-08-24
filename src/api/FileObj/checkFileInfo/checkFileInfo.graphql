@@ -1,5 +1,5 @@
 type checkFileInfoResponse{
-    ok:Boolean
+    ok:Boolean!
     fileType:String
     fileName:String
 }

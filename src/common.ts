@@ -8,6 +8,9 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
     try{
         // null return means error
 
+        if(bbpId===null||bbpId===undefined){
+            return null;
+        }
         const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
             where:{
                 id:bbpId
@@ -86,6 +89,10 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
 export const checkUserHasPermissionReport = async (request:any, rId:string):Promise<boolean|null> => {
     try{
         // null return means error
+
+        if(rId===null||rId===undefined){
+            return null;
+        }
 
         if(isAuthenticated(request)===false){
             console.log("should login first");
@@ -199,6 +206,11 @@ export const getBBPIdByNameId = async (
                 }
             }
         });
+        
+        if(bbpList.length===0){
+            return null;
+        }
+
         return bbpList[0].id;
     }catch(err){
         console.log(err);

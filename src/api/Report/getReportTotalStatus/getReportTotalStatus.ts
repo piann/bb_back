@@ -8,10 +8,12 @@ interface commentInfo{
     id:String;
     content:String;
     writerNickName:String;
+    profilePicId:String|null|undefined;
     fileId:String|null;
 }
 
 interface getReportTotalStatusResponse{
+    nameId:String|null|undefined;
     authorNickName:String;
     progressStatus:Number;
     resultCode:String|null;
@@ -39,6 +41,20 @@ export default{
 
 
                 // main routine
+
+                const bbpId = reportObj.bbpId;
+                const bbpObj = await prisma.bugBountyProgram.findOne({
+                    where:{id:bbpId},
+                    select:{
+                        ownerCompany:{
+                            select:{
+                                nameId:true
+                            }
+                        }
+                    }
+                });
+
+                const nameId = bbpObj?.ownerCompany.nameId
 
                 const bountyAmount = reportObj.bountyAmount;
 
@@ -84,7 +100,8 @@ export default{
                         fileId:true,
                         writer:{
                             select:{
-                                nickName:true
+                                nickName:true,
+                                picId:true
                             }
                         }
                     }
@@ -95,6 +112,7 @@ export default{
                         id:commentObj.id,
                         content:commentObj.content,
                         fileId:commentObj.fileId,
+                        profilePicId:commentObj.writer.picId,
                         writerNickName:commentObj.writer.nickName,
                     }
                     commentInfoList.push(commentInfo);
@@ -103,6 +121,7 @@ export default{
 
 
                 const res = {
+                    nameId,
                     authorNickName,
                     progressStatus,
                     resultCode,

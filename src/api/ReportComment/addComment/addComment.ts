@@ -8,15 +8,13 @@ export default{
     Mutation:{
         addComment: async(_, args:any,{request}):Promise<string|null> =>{
             try{
-                // check if user is login
-                
+
                 const {
                     content,
                     rId,
                     fileId
                 } = args;
 
-                
                 const {
                      user:{
                         id:uId,
