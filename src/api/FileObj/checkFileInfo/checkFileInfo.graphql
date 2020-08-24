@@ -1,0 +1,13 @@
+type checkFileInfoResponse{
+    ok:Boolean
+    fileType:String
+    fileName:String
+}
+
+type Query{
+    checkFileInfo(
+        userId:String
+        fileId:String!
+    ):checkFileInfoResponse
+}
+
