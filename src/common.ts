@@ -199,7 +199,6 @@ export const getBBPIdByNameId = async (
                 }
             }
         });
-        console.log(bbpList);////
         return bbpList[0].id;
     }catch(err){
         console.log(err);

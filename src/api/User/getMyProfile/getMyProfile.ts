@@ -9,9 +9,11 @@ interface reportInfo{
     status:String;
     result:String|null;
     companyName:String|null;
+    vulName:String|null;
+    submitDate:Date|null;
 }
 
-interface getMyPageResponse{
+interface getMyProfileResponse{
     email:String;
     nickName:String;
     profilePictureId:String|null;
@@ -21,7 +23,7 @@ interface getMyPageResponse{
 
 export default{
     Query:{
-        getMyPage: async(_, args:any,{request }):Promise<getMyPageResponse|null> =>{
+        getMyProfile: async(_, args:any,{request }):Promise<getMyProfileResponse|null> =>{
             // Login routine
             try{
                 
@@ -54,8 +56,20 @@ export default{
                 });
 
                 let reportInfoList = [] as any;
+
+
                 for (const submittedReport of submittedReportList){
                     const reportId = submittedReport.id;
+                    const submitDate = submittedReport.createdAt;
+                    console.log(submittedReport)
+                    const vId = submittedReport.vulId;
+                    const vulObj = await prisma.vulnerability.findOne({
+                        where:{
+                            id:vId
+                        }
+                    })
+                    const vulName = vulObj?.name;
+
                     const relatedBbpId = submittedReport.bbpId;
                     
 
@@ -99,6 +113,8 @@ export default{
                         status,
                         resultCode,
                         companyName,
+                        submitDate,
+                        vulName,
                     });
 
                 }
@@ -107,7 +123,7 @@ export default{
                     email,
                     nickName,
                     profilePictureId:picId,
-                    reportInfoList
+                    reportInfoList,
                 }
 
                 return res;

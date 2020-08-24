@@ -3,9 +3,11 @@ type reportInfo{
     status:String!
     result:String
     companyName:String
+    submitDate:DateTime
+    vulName:String
 }
 
-type getMyPageResponse{
+type getMyProfileResponse{
     email:String!
     nickName:String!
     profilePictureId:String
@@ -13,5 +15,5 @@ type getMyPageResponse{
 }
 
 type Query{
-    getMyPage:getMyPageResponse
+    getMyProfile:getMyProfileResponse
 }
