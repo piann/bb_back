@@ -1,5 +1,6 @@
 import { checkUserHasPermissionInBBP, getBBPIdByNameId } from "../../../common";
 import { PrismaClient, Report } from "@prisma/client";
+import { isAuthenticated } from "../../../middleware";
 
 const prisma = new PrismaClient()
 
@@ -8,7 +9,11 @@ export default{
     Mutation:{
         submitReport: async(_, args:any,{request}):Promise<string|null> =>{
             try{
-                // check if user is login
+                
+                if(isAuthenticated(request)===false){
+                    return null;
+                    // only login user can submit report
+                }
                 let { nameId, bbpId } = args;
                 
                 if(bbpId==undefined && nameId!==undefined){

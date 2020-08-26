@@ -1,5 +1,6 @@
 import { checkUserHasPermissionInBBP, getBBPIdByNameId } from "../../../common";
 import { PrismaClient, BugBountyProgram, Vulnerability, ReportTip, InScopeTarget } from "@prisma/client";
+import { isAuthenticated } from "../../../middleware";
 
 const prisma = new PrismaClient()
 
@@ -26,6 +27,11 @@ export default{
        
                 let { nameId, bbpId } = args;
                 
+                if(isAuthenticated(request)===false){
+                    return null;
+                    // only login user can submit report
+                }
+
                 if(bbpId==undefined && nameId!==undefined){
                     bbpId = await getBBPIdByNameId(nameId);
                 }

@@ -119,7 +119,6 @@ export default{
 
                 }
 
-
                 const res = {
                     nameId,
                     authorNickName,
