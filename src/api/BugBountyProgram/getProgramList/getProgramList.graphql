@@ -1,7 +1,7 @@
-
-type getProgramListResponse{
-    logoUrl:String
+type programInfoForPublic{
+    logoId:String
     companyName:String!
+    nameId:String!
     description:String
     inScopeTypeList:[String]
     bountyMin:Int!
@@ -10,5 +10,5 @@ type getProgramListResponse{
 }
 
 type Query{
-    getProgramList: [getProgramListResponse]
+    getProgramList: [programInfoForPublic]
 }
