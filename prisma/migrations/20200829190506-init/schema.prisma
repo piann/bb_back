@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -40,7 +40,6 @@ enum ResultCode{
 
 enum FileCategory{
   REPORT
-  COMMENT
   OTHERS
 }
 
