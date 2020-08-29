@@ -1,0 +1,14 @@
+
+type getProgramListResponse{
+    logoUrl:String
+    companyName:String!
+    description:String
+    inScopeTypeList:[String]
+    bountyMin:Int!
+    bountyMax:Int!
+    managedBy:String
+}
+
+type Query{
+    getProgramList: [getProgramListResponse]
+}

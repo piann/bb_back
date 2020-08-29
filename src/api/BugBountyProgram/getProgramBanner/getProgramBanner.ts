@@ -11,6 +11,7 @@ interface getProgramBannerResponse{
     bountyMin:Number;
     bountyMax:Number;
     logoUrl:String|null;
+    managedBy:String|null;
 }
 
 export default{
@@ -35,7 +36,8 @@ export default{
                 if(bugBountyProgramObj===null){
                     return null;
                 }
-                const isPrivate = bugBountyProgramObj.isPrivate
+                const isPrivate = bugBountyProgramObj.isPrivate;
+                const managedBy = bugBountyProgramObj.managedBy;
                 
                 // main logic
                 const cId = bugBountyProgramObj.ownerCompanyId
@@ -72,6 +74,7 @@ export default{
                 bountyMin,
                 bountyMax,
                 logoUrl,
+                managedBy,
             }
 
             }catch(err){
