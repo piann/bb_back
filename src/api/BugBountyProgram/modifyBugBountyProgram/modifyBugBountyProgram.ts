@@ -28,6 +28,7 @@ export default{
                     fatalPriceMin,
                     fatalPriceMax,
                     introduction,
+                    managedBy,
                 } = args;
 
                 let openDate:Date|undefined;
@@ -56,6 +57,7 @@ export default{
                         fatalPriceMin,
                         fatalPriceMax,
                         introduction,
+                        managedBy,
                     },
                     where:{
                         id:bbpId

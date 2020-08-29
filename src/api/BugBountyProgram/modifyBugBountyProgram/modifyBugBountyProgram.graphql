@@ -21,5 +21,6 @@ type Mutation{
         fatalPriceMin:Int
         fatalPriceMax:Int
         introduction:String
+        managedBy:String
     ):Boolean
 }
