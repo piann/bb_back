@@ -23,6 +23,8 @@ export default{
                 if(role!==Role.ADMIN){
                     return false;
                 }
+
+                // progressStatus is thread of status(stack style)
                 await prisma.progressStatus.create({
                     data:{
                         report:{
