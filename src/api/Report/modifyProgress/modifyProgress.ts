@@ -19,7 +19,6 @@ export default{
                 const { user:{role}} = request;
 
                 // only admin can modify progress
-                console.log(role);////
                 if(role!==Role.ADMIN){
                     return false;
                 }

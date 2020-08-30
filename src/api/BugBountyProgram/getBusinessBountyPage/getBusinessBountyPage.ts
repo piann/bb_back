@@ -58,25 +58,30 @@ export default{
                         id:uId,
                         role
                     }
-               } = request;
+                } = request;
 
-               if(role!==Role.BUSINESS && role!==Role.ADMIN){
-                    console.log("UnAuthorized access 1");
-                    return null;
-               }
+                if(role!==Role.ADMIN){
+                    // ADMIN all pass this check routine
 
-               const ownerCompanyId = bugBountyProgramObj.ownerCompanyId
-               const isOwner:boolean = (await prisma.businessInfo.count({
-                   where:{
-                       user:{id:uId},
-                       company:{id:ownerCompanyId}
-                   }
-               }) >= 1)
-               if (isOwner===false){
-                    console.log("UnAuthorized access 2");
-                   return null;
-               }
+                    if(role!==Role.BUSINESS){
+                        console.log("UnAuthorized access 1");
+                        return null;
                 
+                    } else {
+                        // if Business account, they should be owner company
+                        const ownerCompanyId = bugBountyProgramObj.ownerCompanyId
+                        const isOwner:boolean = (await prisma.businessInfo.count({
+                            where:{
+                                user:{id:uId},
+                                company:{id:ownerCompanyId}
+                            }
+                        }) >= 1)
+                        if (isOwner===false){
+                            console.log("UnAuthorized access 2");
+                            return null;
+                        }
+                    }
+                }
                 // main logic
 
                 /* 
