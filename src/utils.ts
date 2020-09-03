@@ -90,6 +90,7 @@ export const sendAuthSecretMail = async ({
     authSecret
 }:authSecretArgs):Promise<boolean> => {
 
+
     const result = await sendEmail({
         fromInfo:"zerowhale team <no-reply>",
         toEmail:email,
