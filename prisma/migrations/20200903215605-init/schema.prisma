@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -249,7 +249,6 @@ model Report{
   bountyAmount Int @default(value:0)
   vulLevel Int?
   cvssScore Float?
-  writingScore Float?
   evaluationText String?
   commentList ReportComment[]
   createdAt DateTime @default(now())
