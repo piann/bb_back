@@ -1,0 +1,20 @@
+type getReportContentResponse{
+    fileId:String
+    nameId:String!
+    authorNickName:String!
+    vulName:String
+    assetName:String # consider asset is Others
+    title:String
+    description:String
+    cvssScore:Int
+    additionalText:String
+    location:String
+    enviroment:String
+    dump:String
+}
+
+type Query{
+    getReportContent(
+        rId: String!
+    ):getReportContentResponse
+}
