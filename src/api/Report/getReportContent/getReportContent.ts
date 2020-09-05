@@ -7,6 +7,7 @@ const prisma = new PrismaClient()
 interface getReportContentResponse{
 fileId:String|null
 nameId:String
+profilePicId:String|null
 authorNickName:String
 vulName:String|null
 assetName:String|null
@@ -59,7 +60,8 @@ export default{
                         },
                         author:{
                             select:{
-                                nickName:true
+                                nickName:true,
+                                picId:true,
                             }
                         }
                     }
@@ -89,7 +91,8 @@ export default{
 
 
                 const {
-                    name:vulName
+                    name:vulName,
+                    picId:profilePicId
                 } = vulnerability;
 
                 const {
@@ -113,6 +116,7 @@ export default{
 
                 const res = {
                     fileId,
+                    profilePicId,
                     nameId,
                     authorNickName,
                     vulName,

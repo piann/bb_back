@@ -1,6 +1,7 @@
 type getReportContentResponse{
     fileId:String
     nameId:String!
+    profilePicId:String
     authorNickName:String!
     vulName:String
     assetName:String # consider asset is Others
