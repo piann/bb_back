@@ -1,0 +1,7 @@
+type Mutation{
+    addReportFileObj(
+        reportId:String!
+        fileName:String!
+    ):String
+}
+

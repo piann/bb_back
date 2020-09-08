@@ -6,9 +6,9 @@ const prisma = new PrismaClient()
 
 export default{
     Mutation:{
-        addFileObj: async(_, args:any,{request}):Promise<string|null> =>{
+        addReportFileObj: async(_, args:any,{request}):Promise<string|null> =>{
             try{
-                const {fileName} = args;
+                const {reportId, fileName} = args;
                 if(isAuthenticated(request)===false){
                     console.log("should login first");
                     return null;
@@ -18,6 +18,7 @@ export default{
                         id:uId,
                     }
                 } = request;
+
 
                 //// for test, no authorization
                 /*
@@ -34,6 +35,10 @@ export default{
                 */
 
                 const fileType = path.extname(fileName);
+                console.log(fileType);////
+                if(fileType!==".zip"){
+                    return null;
+                }
                 const fileObj = await prisma.fileObj.create({
                     data:{
                         isPublic:true,
@@ -45,8 +50,20 @@ export default{
                         }
                     }
                 });
+                const fileId = fileObj.id
 
-                return fileObj.id;
+                await prisma.report.update({
+                    data:{
+                        reportFile:{
+                            connect:{id:fileId}
+                        }
+                    },
+                    where:{
+                        id:reportId
+                    }
+                });
+
+                return fileId;
                 
             }catch(err){
                 console.log(err);
