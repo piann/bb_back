@@ -9,7 +9,13 @@ export default{
             try{
                 const {userId, fileName} = args;
                 console.log(userId);
-
+                const {
+                    user:{
+                        id:uId,
+                    }
+                } = request;
+                console.log(uId);////
+                console.log("###");////
                 //// for test, no authorization
                 /*
                 const userObj:User|null = await prisma.user.findOne({

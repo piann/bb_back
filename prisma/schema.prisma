@@ -213,6 +213,8 @@ model FileObj{
   id String @id @default(cuid())
   isPublic Boolean
   permittedUserList User[] @relation(references: [id])
+  uploadUser User @relation(fields: [uploadUserId], references: [id], name:"uploadUserRelation")
+  uploadUserId String
   fileName String
   fileType String?
   category FileCategory?

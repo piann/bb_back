@@ -1,5 +1,5 @@
 import { PrismaClient, ReasonOfLock, Role, User } from "@prisma/client";
-import {generateSaltedHash, checkEmailChars, checkOnlyLowerNormalChars, sendAuthSecretMail} from "../../../utils";
+import {generateSaltedHash, checkEmailChars, checkOnlyNormalChars, sendAuthSecretMail} from "../../../utils";
 import crypto from "crypto";
 
 
@@ -19,7 +19,7 @@ export default{
                 } = args;
 
                 const isEmailRightFormat:boolean = checkEmailChars(email);
-                const isIdRightFormat:boolean = checkOnlyLowerNormalChars(nickName);
+                const isIdRightFormat:boolean = checkOnlyNormalChars(nickName);
                 
                 if(isEmailRightFormat===false || isIdRightFormat===false || nickName.length < 3 || password.length < 8 ){
                     return false;
