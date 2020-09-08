@@ -1,0 +1,72 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "FileObj",
+      "field": "uploadUser",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "FileObj",
+          "field": "uploadUser"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "FileObj",
+          "field": "uploadUser"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[uploadUserId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "FileObj",
+          "field": "uploadUser"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "FileObj",
+          "field": "uploadUser"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"uploadUserRelation\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "FileObj",
+      "field": "uploadUserId",
+      "type": "String",
+      "arity": "Required"
+    }
+  ]
+}

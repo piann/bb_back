@@ -1,5 +1,6 @@
 import { PrismaClient, FileCategory} from "@prisma/client";
 import path from 'path';
+import { isAuthenticated } from "src/middleware";
 
 const prisma = new PrismaClient()
 
@@ -7,15 +8,20 @@ export default{
     Mutation:{
         addFileObj: async(_, args:any,{request}):Promise<string|null> =>{
             try{
-                const {userId, fileName} = args;
-                console.log(userId);
+                const {fileName} = args;
+                if(isAuthenticated(request)===false){
+                    console.log("should login first");
+                    return null;
+                }
                 const {
                     user:{
                         id:uId,
                     }
                 } = request;
+
                 console.log(uId);////
                 console.log("###");////
+                
                 //// for test, no authorization
                 /*
                 const userObj:User|null = await prisma.user.findOne({
@@ -41,9 +47,9 @@ export default{
                     }
                 })
                 const fileObjId = fileObj.id;
-
+                console.log(fileObjId);
                 
-                return fileObjId;
+                return null;
             }catch(err){
                 console.log(err);
                 return null;
