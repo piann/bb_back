@@ -1,6 +1,6 @@
 import { PrismaClient, FileCategory} from "@prisma/client";
 import path from 'path';
-import { isAuthenticated } from "src/middleware";
+import { isAuthenticated } from "../../../middleware";
 
 const prisma = new PrismaClient()
 
@@ -21,7 +21,7 @@ export default{
 
                 console.log(uId);////
                 console.log("###");////
-                
+
                 //// for test, no authorization
                 /*
                 const userObj:User|null = await prisma.user.findOne({
@@ -42,14 +42,15 @@ export default{
                         isPublic:true,
                         fileName,
                         fileType,
-                        category:FileCategory.OTHERS
-                        
+                        category:FileCategory.OTHERS,
+                        uploadUser:{
+                            connect:{id:uId}
+                        }
                     }
-                })
-                const fileObjId = fileObj.id;
-                console.log(fileObjId);
+                });
+
+                return fileObj.id;
                 
-                return null;
             }catch(err){
                 console.log(err);
                 return null;

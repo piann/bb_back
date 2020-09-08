@@ -1,15 +1,26 @@
 import { PrismaClient, FileObj } from "@prisma/client";
+import { isAuthenticated } from "../../../middleware";
+
 
 const prisma = new PrismaClient()
 
 export default{
     Mutation:{
-        registerCompany: async(_, args:any,{request, isAuthenticated}):Promise<boolean> =>{
+        registerCompany: async(_, args:any,{request}):Promise<boolean> =>{
             // register company by admin
 
             //// add argument file
             try{
                 //// add routine for check root
+                if(isAuthenticated(request)===false){
+                    return false;
+                }
+
+                const {
+                    user:{
+                        id:uId,
+                    }
+                } = request;
 
                 const {
                     companyName,
@@ -41,7 +52,10 @@ export default{
                     data:{
                         isPublic:true,
                         fileName:"pastelLogo.png",
-                        fileType:"png"
+                        fileType:"png",
+                        uploadUser:{
+                            connect:{id:uId}
+                        }
                     }
                 })
                 const logoId = fileObj.id;
