@@ -1,0 +1,6 @@
+type Mutation{
+    addProfileFileObj(
+        fileName:String!
+    ):String
+}
+

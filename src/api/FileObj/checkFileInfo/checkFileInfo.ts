@@ -6,6 +6,7 @@ interface checkFileInfoResponse{
     ok:Boolean;
     fileType:String|undefined|null;
     fileName:String|undefined|null;
+    category:String|undefined|null;
 }
 
 
@@ -31,7 +32,8 @@ export default{
                 return {
                     ok:true,
                     fileType:fileObj?.fileType,
-                    fileName:fileObj?.fileName
+                    fileName:fileObj?.fileName,
+                    category:fileObj?.category
                 }
 
 
@@ -40,7 +42,8 @@ export default{
                 return {
                     ok:false,
                     fileType:null,
-                    fileName:null
+                    fileName:null,
+                    category:null
                 }
             }
         }
