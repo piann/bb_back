@@ -12,6 +12,8 @@ type getMyProfileResponse{
     email:String!
     nickName:String!
     profilePictureId:String
+    credit:Int
+    numOfVul:Int
     reportInfoList:[reportInfo]
 }
 

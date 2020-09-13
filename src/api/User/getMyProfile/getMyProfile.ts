@@ -18,6 +18,8 @@ interface getMyProfileResponse{
     email:String;
     nickName:String;
     profilePictureId:String|null;
+    credit?:Number
+    numOfVul?:Number
     reportInfoList:[reportInfo]|null;
 }
 
@@ -43,6 +45,7 @@ export default{
                         role
                     }
                 } = request;
+
                 console.log(role);////
                 if(role!==Role.HACKER){
                     return {
@@ -53,6 +56,24 @@ export default{
                         reportInfoList:null,
                     };
                 }
+
+                // get Information Hacker Spec
+
+                const hackerInfoObj = await prisma.hackerInfo.findOne({
+                    where:{
+                        userId:uId
+                    }
+                });
+                const credit = hackerInfoObj?.credit;
+
+                const numOfVul = await prisma.report.count({
+                    where:{
+                        authorId:uId,
+                        cvssScore:{
+                            not:null
+                        }
+                    }
+                })
 
                 // get information of reports
                 const submittedReportList = await prisma.report.findMany({
@@ -131,6 +152,8 @@ export default{
                     nickName,
                     profilePictureId:picId,
                     reportInfoList,
+                    credit,
+                    numOfVul
                 }
 
                 return res;

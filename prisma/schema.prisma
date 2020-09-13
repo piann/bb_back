@@ -250,7 +250,7 @@ model Report{
   progressStatus ProgressStatus[]
   result ReportResult[]
   bountyAmount Int @default(value:0)
-  vulLevel Int?
+  vulLevel Int? //1,2,3,4
   cvssScore Float?
   writingScore Float?
   evaluationText String?
