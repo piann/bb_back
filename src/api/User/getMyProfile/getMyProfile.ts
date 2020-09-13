@@ -14,6 +14,7 @@ interface reportInfo{
 }
 
 interface getMyProfileResponse{
+    role:String;
     email:String;
     nickName:String;
     profilePictureId:String|null;
@@ -44,8 +45,13 @@ export default{
                 } = request;
                 console.log(role);////
                 if(role!==Role.HACKER){
-                    console.log("Only Hacker has 'my page'");
-                    return null;
+                    return {
+                        role,
+                        email,
+                        nickName,
+                        profilePictureId:picId,
+                        reportInfoList:null,
+                    };
                 }
 
                 // get information of reports
@@ -120,6 +126,7 @@ export default{
                 }
 
                 const res = {
+                    role,
                     email,
                     nickName,
                     profilePictureId:picId,

@@ -6,7 +6,7 @@ type getProgramBannerResponse{
     submittedReportCount:Int!
     bountyMin:Int!
     bountyMax:Int!
-    logoUrl:String
+    logoId:String
     managedBy:String
 }
 

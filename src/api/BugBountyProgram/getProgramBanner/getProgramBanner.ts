@@ -10,7 +10,7 @@ interface getProgramBannerResponse{
     submittedReportCount:Number;
     bountyMin:Number;
     bountyMax:Number;
-    logoUrl:String|null;
+    logoId:String|null;
     managedBy:String|null;
 }
 
@@ -51,6 +51,7 @@ export default{
                     companyName,
                     description,
                     webPageUrl,
+                    logoId
                 } = companyObj;
 
                 const submittedReportCount = await prisma.report.count({
@@ -62,9 +63,6 @@ export default{
                     fatalPriceMax:bountyMax
                 } = bugBountyProgramObj
 
-                //// add logic for getting logoUrl
-                const logoUrl = "file.server.name/f/{logoid}" //// temp logic
-
             return {
                 isPrivate,
                 companyName,
@@ -73,7 +71,7 @@ export default{
                 submittedReportCount,
                 bountyMin,
                 bountyMax,
-                logoUrl,
+                logoId,
                 managedBy,
             }
 
