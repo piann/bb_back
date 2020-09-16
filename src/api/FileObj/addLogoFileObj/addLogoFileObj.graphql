@@ -1,0 +1,7 @@
+type Mutation{
+    addLogoFileObj(
+        companyId:String!
+        fileName:String!
+    ):String
+}
+
