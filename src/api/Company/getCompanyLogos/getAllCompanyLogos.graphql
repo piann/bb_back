@@ -1,0 +1,10 @@
+type companyLogoInfo{
+    id:String!
+    companyName:String!
+    nameId:String!
+    logoId:String
+}
+
+type Query{
+    getAllCompanyLogos: [companyLogoInfo]
+}

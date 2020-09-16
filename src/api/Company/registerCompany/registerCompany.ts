@@ -1,4 +1,4 @@
-import { PrismaClient, FileObj } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { isAuthenticated } from "../../../middleware";
 
 
@@ -16,11 +16,6 @@ export default{
                     return false;
                 }
 
-                const {
-                    user:{
-                        id:uId,
-                    }
-                } = request;
 
                 const {
                     companyName,
@@ -47,27 +42,12 @@ export default{
                     return false;
                 }
 
-                //// add logic for upload logo and return logoId
-                const fileObj:FileObj = await prisma.fileObj.create({
-                    data:{
-                        isPublic:true,
-                        fileName:"pastelLogo.png",
-                        fileType:"png",
-                        uploadUser:{
-                            connect:{id:uId}
-                        }
-                    }
-                })
-                const logoId = fileObj.id;
-
                 await prisma.company.create({
                     data:{
                         companyName,
                         nameId,
                         webPageUrl,
-                        logo:{
-                            connect:{id:logoId}
-                        }
+                        logo:null
                     },
                     
                 });
