@@ -92,11 +92,11 @@ export default{
 
                 const {
                     name:vulName,
-                    picId:profilePicId
                 } = vulnerability;
 
                 const {
-                    nickName:authorNickName
+                    nickName:authorNickName,
+                    picId:profilePicId
                 } = author;
 
                 const {
