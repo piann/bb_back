@@ -1,0 +1,6 @@
+type Mutation{
+    modifyReportResult(
+        rId:String!
+        resultCode:String!
+    ): String
+}
