@@ -1,0 +1,11 @@
+type Mutation{
+    evaluateReport(
+        rId:String!
+        bountyAmount:Int
+        grantedCredit:Int
+        vulLevel:Int
+        cvssScore:Float
+        writingScore:Float
+        evaluationText:String
+    ): String
+}
