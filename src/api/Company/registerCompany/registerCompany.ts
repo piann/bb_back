@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import { isAuthenticated } from "../../../middleware";
 
 
@@ -9,18 +9,24 @@ export default{
         registerCompany: async(_, args:any,{request}):Promise<boolean> =>{
             // register company by admin
 
-            //// add argument file
             try{
-                //// add routine for check root
+                
                 if(isAuthenticated(request)===false){
                     return false;
                 }
 
+                const { user:{role}} = request;
+
+                // only admin can modify progress
+                if(role!==Role.ADMIN){
+                    return false;
+                }
 
                 const {
                     companyName,
                     nameId,
-                    webPageUrl
+                    webPageUrl,
+                    description,
                 } = args;
 
                 const isCompanyExisting:boolean = ((await prisma.company.count({
@@ -47,7 +53,8 @@ export default{
                         companyName,
                         nameId,
                         webPageUrl,
-                        logo:null
+                        logo:null,
+                        description,
                     },
                     
                 });

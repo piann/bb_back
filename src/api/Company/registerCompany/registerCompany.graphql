@@ -4,6 +4,6 @@ type Mutation{
     companyName: String!
     nameId: String!
     webPageUrl: String
-    #### add argument file
+    description: String
     ): Boolean
 }
