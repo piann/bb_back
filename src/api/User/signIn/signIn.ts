@@ -1,5 +1,5 @@
 import { PrismaClient,User } from "@prisma/client";
-import {compareSaltedHash, generateToken} from "../../../utils";
+import {compareSaltedHash, generateToken, generateSaltedHash} from "../../../utils";
 
 const prisma = new PrismaClient()
 
@@ -66,7 +66,7 @@ export default{
                             ok:false,
                             error:ACCOUNT_LOCKED_MSG,
                             token:null
-                        };
+                        }; 
                     } else {
                         // Success to login.
                         const passwordHash:string = user.passwordHash;

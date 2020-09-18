@@ -1,13 +1,26 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import util from "util";
+import { isAuthenticated } from "../../../middleware";
 const prisma = new PrismaClient()
 
 export default{
     Mutation:{
         modifyBugBountyProgram: async(_, args:any,{request}):Promise<Boolean> =>{
             try{
-                //// add routine for check root
 
+                if(isAuthenticated(request)===false){
+                    console.log("should login first");
+                    return false;
+                }
+                const {
+                    user:{
+                        role,
+                    }
+                } = request;
+                if( role!==Role.ADMIN){
+                    console.log("forbidden access")
+                    return false;
+                }
                 const {
                     bbpId,
                     isPrivate,
