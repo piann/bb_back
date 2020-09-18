@@ -12,6 +12,7 @@ type getReportTotalStatusResponse{
     progressStatus:Int!
     resultCode:String
     bountyAmount:Int
+    grantedCredit:Int
     commentInfoList:[commentInfo]
 }
 

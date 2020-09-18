@@ -18,6 +18,7 @@ interface getReportTotalStatusResponse{
     progressStatus:Number;
     resultCode:String|null;
     bountyAmount:Number|null;
+    grantedCredit:Number|null;
     commentInfoList:[commentInfo];
 }
 
@@ -56,7 +57,10 @@ export default{
 
                 const nameId = bbpObj?.ownerCompany.nameId
 
-                const bountyAmount = reportObj.bountyAmount;
+                const {
+                    bountyAmount,
+                    grantedCredit,
+                 } = reportObj;
 
                 
                 const authorObj = await prisma.user.findOne({
@@ -84,6 +88,7 @@ export default{
                     },
                     orderBy:{createdAt:'desc'}
                 });
+                console.log(reportResultObjList);////
                 let resultCode:ResultCode|null = null;
                 if (reportResultObjList.length!==0){
                     resultCode = reportResultObjList[0].resultCode;
@@ -125,6 +130,7 @@ export default{
                     progressStatus,
                     resultCode,
                     bountyAmount,
+                    grantedCredit,
                     commentInfoList
                 }
                 return res;
