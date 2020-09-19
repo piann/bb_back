@@ -1,5 +1,5 @@
 import { PrismaClient,User } from "@prisma/client";
-import {compareSaltedHash, generateToken, generateSaltedHash} from "../../../utils";
+import {compareSaltedHash, generateToken } from "../../../utils";
 
 const prisma = new PrismaClient()
 

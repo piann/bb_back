@@ -41,7 +41,7 @@ export default{
                 const mailResult = await sendAuthSecretMail({
                     email,
                     nickName,
-                    authSecret
+                    secret:authSecret
                 });
 
                 if(mailResult===true){

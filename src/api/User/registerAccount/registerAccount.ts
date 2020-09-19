@@ -21,7 +21,7 @@ export default{
                 const isEmailRightFormat:boolean = checkEmailChars(email);
                 const isIdRightFormat:boolean = checkOnlyNormalChars(nickName);
                 
-                if(isEmailRightFormat===false || isIdRightFormat===false || nickName.length < 3 || password.length < 8 ){
+                if(isEmailRightFormat===false || isIdRightFormat===false || nickName.length < 3){// || password.length < 8 ){ // submitted password is now hash value, so it is not valid check routine
                     return false;
                 }
 
@@ -88,7 +88,7 @@ export default{
                 const mailResult = await sendAuthSecretMail({
                     email,
                     nickName,
-                    authSecret
+                    secret:authSecret
                 })
                 console.log("Send mail result : ",mailResult);////
 
