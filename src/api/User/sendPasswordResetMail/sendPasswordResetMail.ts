@@ -21,6 +21,7 @@ export default{
                 }
 
                 const {
+                    id:uId,
                     nickName,
                     isLocked,
                     reasonOfLock
@@ -30,12 +31,10 @@ export default{
                     return false;
                 } // Locked account can't be entered by this load. but new account is ok.
 
-
-                const randomHex1 = crypto.randomBytes(14).toString('hex');
-                const uHex = crypto.createHmac('md5',"@emailHash").update(email).digest('hex');
-                const randomHex2 = crypto.randomBytes(14).toString('hex');
-                const passwordResetSecret = randomHex1 + uHex + randomHex2;
-
+                const dummy = Math.ceil(Math.random()*1234567890+1234567890123456789).toString(36).substring(6,12) // length 6 dummy
+                const randomHex = crypto.randomBytes(42).toString('hex');
+                const passwordResetSecret = dummy+ uId + randomHex; //6 + 25 + 84
+                
                 await prisma.user.update({
                     data:{
                         passwordResetSecret
@@ -54,7 +53,7 @@ export default{
                 if(mailResult===true){
                     return true;
                 }
-
+                
                 return false;
 
             }catch(err){
