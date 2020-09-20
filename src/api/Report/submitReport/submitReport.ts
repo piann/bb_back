@@ -56,7 +56,7 @@ export default{
                         where:{
                             id:targetId,
                             bugBountyProgram:{
-                                is:{id:bbpId}
+                                id:bbpId
                             },
                         }
                     }) >= 1 )

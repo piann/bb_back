@@ -37,9 +37,7 @@ export default{
                 
                 await prisma.user.update({
                     data:{
-                        passwordResetSecret:{
-                            set:passwordResetSecret
-                        }
+                        passwordResetSecret,
                     },
                     where:{
                         email

@@ -50,9 +50,7 @@ export default{
                     const inScopeTargetList = await prisma.inScopeTarget.findMany({
                         where:{
                             bugBountyProgram:{
-                                is:{
                                     id:bbpId
-                                }
                             }
                         }, 
                         select:{

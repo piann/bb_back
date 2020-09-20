@@ -74,7 +74,7 @@ export default{
                 const ruleConnObjList = await prisma.programRuleConnBugBountyProgram.findMany({
                     where:{
                         bugBountyProgram:{
-                            is:{id:bbpId}
+                            id:bbpId
                         }
                     }
                 });
@@ -107,7 +107,7 @@ export default{
                 const inScopeTargetFullObjList:InScopeTarget[] = await prisma.inScopeTarget.findMany({
                     where:{
                         bugBountyProgram:{
-                            is:{id:bbpId}
+                            id:bbpId
                         }
                         
                     }
@@ -124,7 +124,7 @@ export default{
                 const outOfScopeTargetFullObjList:InScopeTarget[] = await prisma.outOfScopeTarget.findMany({
                     where:{
                             bugBountyProgram:{
-                                is:{id:bbpId}
+                                id:bbpId
                         }
                     }
                 })
@@ -141,7 +141,7 @@ export default{
                 const exclusionConnObjList = await prisma.bountyExclusionConnBugBountyProgram.findMany({
                     where:{
                         bugBountyProgram:{
-                            is:{id:bbpId}
+                            id:bbpId
                         }
                     }
                 });

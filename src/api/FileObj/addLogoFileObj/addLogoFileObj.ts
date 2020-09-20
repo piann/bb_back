@@ -74,9 +74,8 @@ export default{
                     await prisma.fileObj.update({
                         data:{
                             fileName,
-                            fileType:{
-                                set:fileType
-                            },
+                            fileType,
+
                         },
                         where:{
                             id:logoId

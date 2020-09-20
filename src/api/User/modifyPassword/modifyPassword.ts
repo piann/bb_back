@@ -26,9 +26,7 @@ export default{
                 
                 await prisma.user.update({
                     data:{
-                        passwordHash:{
-                            set:generateSaltedHash(newPassword)
-                        }
+                        passwordHash:generateSaltedHash(newPassword)
                     },
                     where:{
                         id

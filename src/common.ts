@@ -46,10 +46,10 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                 const isUserInPrivateProgram:boolean = ( await prisma.privateProgramConnUser.count({
                     where:{
                         bugBountyProgram:{
-                            is:{id:bbpId}
+                            id:bbpId
                         },
                         permittedUser:{
-                            is:{id:uId}
+                            id:uId
                         }
     
                     }
@@ -138,7 +138,7 @@ export const checkUserHasPermissionReport = async (request:any, rId:string):Prom
                 const collaboratorObjList = await prisma.collaboratorInfo.findMany({
                     where:{
                         report:{
-                            is:{id:rId}
+                            id:rId
                         }
                     },
                     select:{
@@ -204,9 +204,7 @@ export const getBBPIdByNameId = async (
         const bbpList = await prisma.bugBountyProgram.findMany({
             where:{
                 ownerCompany:{
-                    is:{
-                        nameId
-                    }
+                    nameId
                 }
             }
         });

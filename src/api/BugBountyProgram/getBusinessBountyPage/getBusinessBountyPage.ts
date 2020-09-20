@@ -73,10 +73,10 @@ export default{
                         const isOwner:boolean = (await prisma.businessInfo.count({
                             where:{
                                 user:{
-                                    is:{id:uId}
+                                    id:uId
                                 },
                                 company:{
-                                    is:{id:ownerCompanyId}
+                                    id:ownerCompanyId
                                 }
                             }
                         }) >= 1)
@@ -102,7 +102,7 @@ export default{
                 const submittedReportList = await prisma.report.findMany({
                     where:{
                         bugBountyProgram:{
-                            is:{id:bbpId},
+                            id:bbpId,
                         }
                     },
                     orderBy:{createdAt:'desc'}
@@ -123,7 +123,7 @@ export default{
                     const progressStatusObjList = await prisma.progressStatus.findMany({
                         where:{
                             report:{
-                                is:{id:submittedReport.id},
+                                id:submittedReport.id
                             }
                         },
                         orderBy:{createdAt:'desc'}
@@ -137,7 +137,7 @@ export default{
                     const reportResultObjList = await prisma.reportResult.findMany({
                         where:{
                             report:{
-                                is:{id:submittedReport.id},
+                                id:submittedReport.id
                             }
                         },
                         orderBy:{createdAt:'desc'}
@@ -186,7 +186,7 @@ export default{
                     const progressStatusObjList = await prisma.progressStatus.findMany({
                         where:{
                             report:{
-                                is:{id:submittedReport.id},
+                                id:submittedReport.id
                             }
                         },
                         orderBy:{createdAt:'desc'}
@@ -198,7 +198,7 @@ export default{
                     const reportResultObjList = await prisma.reportResult.findMany({
                         where:{
                             report:{
-                                is:{id:submittedReport.id},
+                                id:submittedReport.id
                             }
                         },
                         orderBy:{createdAt:'desc'}

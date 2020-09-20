@@ -116,7 +116,7 @@ export default{
                     const progressStatusObjList = await prisma.progressStatus.findMany({
                         where:{
                             report:{
-                                is:{id:submittedReport.id},
+                                id:submittedReport.id
                             }
                         },
                         orderBy:{createdAt:'desc'}
@@ -128,7 +128,7 @@ export default{
                     const reportResultObjList = await prisma.reportResult.findMany({
                         where:{
                             report:{
-                                is:{id:submittedReport.id},
+                                id:submittedReport.id
                             }
                         },
                         orderBy:{createdAt:'desc'}

@@ -22,6 +22,7 @@ export default{
                     email,
                     password
                 } = args;
+                
                 const checkUser:number = await prisma.user.count({where:{email}});
                 let existEmail:boolean;
                 if(checkUser>=1){
@@ -74,9 +75,7 @@ export default{
                         if (isSuccess===true){
                             await prisma.user.update({
                                 data:{
-                                    numberOfLoginFail:{
-                                        set:0
-                                    },
+                                    numberOfLoginFail:0,
                                 },
                                 where:{id:user.id}
                             })
@@ -91,9 +90,7 @@ export default{
                             const numberOfLoginFail:number = (user.numberOfLoginFail)+1;
                             await prisma.user.update({
                                 data:{
-                                    numberOfLoginFail:{
-                                        set:numberOfLoginFail
-                                    }
+                                    numberOfLoginFail,
                                 },
                                 where:{id:user.id}
                             });

@@ -77,7 +77,7 @@ export default{
                 const progressStatusObjList = await prisma.progressStatus.findMany({
                     where:{
                         report:{
-                            is:{id:rId}
+                            id:rId
                         },
                     },
                     orderBy:{createdAt:'desc'}
@@ -89,7 +89,7 @@ export default{
                 const reportResultObjList = await prisma.reportResult.findMany({
                     where:{
                         report:{
-                            is:{id:rId}
+                            id:rId
                         },
                     },
                     orderBy:{createdAt:'desc'}
@@ -105,7 +105,7 @@ export default{
                 const commentInfoList = [] as any;
                 const commentObjList = await prisma.reportComment.findMany({
                     where:{report:{
-                        is:{id:rId}
+                        id:rId
                     }},
                     select:{
                         id:true,

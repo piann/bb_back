@@ -46,15 +46,9 @@ export default{
 
                 // change lock status & company           
                 await prisma.user.update({data:{
-                    isLocked:{
-                        set:false
-                    },
-                    reasonOfLock:{
-                        set:null
-                    },
-                    authSecret:{
-                        set:null
-                    }
+                    isLocked:false,
+                    reasonOfLock:null,
+                    authSecret
                 }, 
                 where:{id:userId}
                 });
