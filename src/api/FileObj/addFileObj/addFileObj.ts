@@ -1,4 +1,4 @@
-import { PrismaClient, FileCategory} from "@prisma/client";
+import { PrismaClient, FileCategory, Role} from "@prisma/client";
 import path from 'path';
 import { isAuthenticated } from "../../../middleware";
 
@@ -16,10 +16,14 @@ export default{
                 const {
                     user:{
                         id:uId,
+                        role,
                     }
                 } = request;
 
-                //// for test, no authorization
+                if( role!==Role.ADMIN){
+                    console.log("forbidden access")
+                    return null;
+                }
                 /*
                 const userObj:User|null = await prisma.user.findOne({
                     where:{id:userId}

@@ -17,7 +17,7 @@ interface getProgramBodyContentsResponse{
     lowPriceMin:Number;
     lowPriceMax:Number;
     mediumPriceMin:Number;
-    mediumriceMax:Number;
+    mediumPriceMax:Number;
     highPriceMin:Number;
     highriceMax:Number;
     fatalPriceMin:Number;
@@ -94,7 +94,7 @@ export default{
                     lowPriceMin,
                     lowPriceMax,
                     mediumPriceMin,
-                    mediumriceMax,
+                    mediumPriceMax,
                     highPriceMin,
                     highriceMax,
                     fatalPriceMin,
@@ -165,7 +165,7 @@ export default{
                     lowPriceMin,
                     lowPriceMax,
                     mediumPriceMin,
-                    mediumriceMax,
+                    mediumPriceMax,
                     highPriceMin,
                     highriceMax,
                     fatalPriceMin,

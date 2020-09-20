@@ -15,7 +15,7 @@ type Mutation{
         lowPriceMin:Int
         lowPriceMax:Int
         mediumPriceMin:Int
-        mediumriceMax:Int
+        mediumPriceMax:Int
         highPriceMin:Int
         highriceMax:Int
         fatalPriceMin:Int

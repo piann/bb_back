@@ -29,7 +29,6 @@ export default{
         getMyProfile: async(_, args:any,{request }):Promise<getMyProfileResponse|null> =>{
             // Login routine
             try{
-                
                 // non login user is forbidden to access
                 const isAuth:boolean = isAuthenticated(request);
                 if(isAuth===false){
@@ -46,7 +45,6 @@ export default{
                     }
                 } = request;
 
-                console.log(role);////
                 if(role!==Role.HACKER){
                     return {
                         role,

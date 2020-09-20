@@ -1,0 +1,42 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "BugBountyProgram",
+      "field": "mediumPriceMax",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "BugBountyProgram",
+          "field": "mediumPriceMax"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "BugBountyProgram",
+          "field": "mediumPriceMax"
+        },
+        "directive": "default"
+      },
+      "argument": "value",
+      "value": "0"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "BugBountyProgram",
+      "field": "mediumriceMax"
+    }
+  ]
+}

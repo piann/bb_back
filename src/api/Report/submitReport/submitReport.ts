@@ -47,7 +47,7 @@ export default{
                     additionalText,
                 } = args;
 
-                //// if target is not 'others'
+                // if target is not 'others'
                 if(targetId !== -1){
 
                     
@@ -89,7 +89,7 @@ export default{
 
 
                 const rId = reportObj.id
-                 //// if target is not 'others', add target
+                 // if target is not 'others', add target
                 if(targetId !== -1){
                     await prisma.report.update({
                         data:{
