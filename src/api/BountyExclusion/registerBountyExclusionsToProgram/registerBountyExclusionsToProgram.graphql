@@ -1,0 +1,6 @@
+type Mutation{
+    registerBountyExclusionToProgram(
+        eIdList:[Int]
+        bId:String
+    ):Boolean
+}

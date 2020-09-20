@@ -56,25 +56,51 @@ export default{
 
                 await prisma.bugBountyProgram.update({
                     data:{
-                        isPrivate,
-                        disclosurePolicy,
+                        isPrivate:{
+                            set:isPrivate
+                        },
+                        disclosurePolicy:{
+                            set:disclosurePolicy
+                        },
                         openDate:{
                             set:openDate
                         },
                         closeDate:{
                             set:closeDate
                         },
-                        isOpen,
-                        lowPriceMin,
-                        lowPriceMax,
-                        mediumPriceMin,
-                        mediumriceMax,
-                        highPriceMin,
-                        highriceMax,
-                        fatalPriceMin,
-                        fatalPriceMax,
-                        introduction,
-                        managedBy,
+                        isOpen:{
+                            set:isOpen
+                        },
+                        lowPriceMin:{
+                            set:lowPriceMin
+                        },
+                        lowPriceMax:{
+                            set:lowPriceMax
+                        },
+                        mediumPriceMin:{
+                            set:mediumPriceMin
+                        },
+                        mediumriceMax:{
+                            set:mediumriceMax
+                        },
+                        highPriceMin:{
+                            set:highPriceMin
+                        },
+                        highriceMax:{
+                            set:highriceMax
+                        },
+                        fatalPriceMin:{
+                            set:fatalPriceMin
+                        },
+                        fatalPriceMax:{
+                            set:fatalPriceMax
+                        },
+                        introduction:{
+                            set:introduction
+                        },
+                        managedBy:{
+                            set:managedBy
+                        },
                     },
                     where:{
                         id:bbpId
