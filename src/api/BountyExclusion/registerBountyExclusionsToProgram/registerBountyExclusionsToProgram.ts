@@ -17,7 +17,7 @@ export default{
                 if(role!==Role.ADMIN){
                     return false;
                 }
-
+                
                 const {bId, eIdList} = args;
                 for(const eId of eIdList){
                     await prisma.bountyExclusionConnBugBountyProgram.create({
