@@ -36,8 +36,12 @@ export default{
          
                 const resultObj = await prisma.user.update({
                     data:{
-                        passwordResetSecret:null,
-                        passwordHash:generateSaltedHash(newPassword),
+                        passwordResetSecret:{
+                            set:null
+                        },
+                        passwordHash:{
+                            set:generateSaltedHash(newPassword)
+                        },
                     }, 
                     where:{id:uId}
                 });

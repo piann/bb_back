@@ -72,8 +72,12 @@ export default{
                         const ownerCompanyId = bugBountyProgramObj.ownerCompanyId
                         const isOwner:boolean = (await prisma.businessInfo.count({
                             where:{
-                                user:{id:uId},
-                                company:{id:ownerCompanyId}
+                                user:{
+                                    is:{id:uId}
+                                },
+                                company:{
+                                    is:{id:ownerCompanyId}
+                                }
                             }
                         }) >= 1)
                         if (isOwner===false){
@@ -97,7 +101,9 @@ export default{
 
                 const submittedReportList = await prisma.report.findMany({
                     where:{
-                        bugBountyProgram:{id:bbpId},
+                        bugBountyProgram:{
+                            is:{id:bbpId},
+                        }
                     },
                     orderBy:{createdAt:'desc'}
                 })
@@ -116,7 +122,9 @@ export default{
                     // 1. get Recent ProgressStatus
                     const progressStatusObjList = await prisma.progressStatus.findMany({
                         where:{
-                            report:{id:submittedReport.id},
+                            report:{
+                                is:{id:submittedReport.id},
+                            }
                         },
                         orderBy:{createdAt:'desc'}
                     });
@@ -128,7 +136,9 @@ export default{
                     // 2. get Recent ReportResult
                     const reportResultObjList = await prisma.reportResult.findMany({
                         where:{
-                            report:{id:submittedReport.id},
+                            report:{
+                                is:{id:submittedReport.id},
+                            }
                         },
                         orderBy:{createdAt:'desc'}
                     });
@@ -175,7 +185,9 @@ export default{
                     // get recent status
                     const progressStatusObjList = await prisma.progressStatus.findMany({
                         where:{
-                            report:{id:submittedReport.id},
+                            report:{
+                                is:{id:submittedReport.id},
+                            }
                         },
                         orderBy:{createdAt:'desc'}
                     });
@@ -185,7 +197,9 @@ export default{
                     // get recent result
                     const reportResultObjList = await prisma.reportResult.findMany({
                         where:{
-                            report:{id:submittedReport.id},
+                            report:{
+                                is:{id:submittedReport.id},
+                            }
                         },
                         orderBy:{createdAt:'desc'}
                     });

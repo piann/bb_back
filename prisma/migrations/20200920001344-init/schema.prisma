@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -123,6 +123,7 @@ model BugBountyProgram{
   introduction String @default(value:"introduction")
   inScopeList InScopeTarget[]
   outOfScopeList OutOfScopeTarget[]
+  exclusionList BountyExclusion[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
   reportList Report[]

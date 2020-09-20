@@ -68,7 +68,9 @@ export default{
                 // for reportTipList
                 const reportTipConnObjList = await prisma.reportTipConnBugBountyProgram.findMany({
                     where:{
-                        bugBountyProgram:{id:bbpId}
+                        bugBountyProgram:{
+                            is:{id:bbpId}
+                        }
                     }
                 });
 
@@ -88,7 +90,11 @@ export default{
                 
                 // inScopeList
                 const inScopeTargetFullObjList:InScopeTarget[] = await prisma.inScopeTarget.findMany({
-                    where:{bugBountyProgram:{id:bbpId}}
+                    where:{
+                        bugBountyProgram:{
+                            is:{id:bbpId}
+                        }
+                    }
                 })
 
                 let inScopeTargetList=[] as any;

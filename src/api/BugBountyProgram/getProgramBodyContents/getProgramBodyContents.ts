@@ -73,7 +73,9 @@ export default{
                 // for ruleValueList
                 const ruleConnObjList = await prisma.programRuleConnBugBountyProgram.findMany({
                     where:{
-                        bugBountyProgram:{id:bbpId}
+                        bugBountyProgram:{
+                            is:{id:bbpId}
+                        }
                     }
                 });
                 let ruleValueList = [] as any;
@@ -103,7 +105,12 @@ export default{
 
                 // inScopeList
                 const inScopeTargetFullObjList:InScopeTarget[] = await prisma.inScopeTarget.findMany({
-                    where:{bugBountyProgram:{id:bbpId}}
+                    where:{
+                        bugBountyProgram:{
+                            is:{id:bbpId}
+                        }
+                        
+                    }
                 })
 
                 let inScopeTargetList=[] as any;
@@ -115,7 +122,11 @@ export default{
                 }
                 // outOfScopeList
                 const outOfScopeTargetFullObjList:InScopeTarget[] = await prisma.outOfScopeTarget.findMany({
-                    where:{bugBountyProgram:{id:bbpId}}
+                    where:{
+                            bugBountyProgram:{
+                                is:{id:bbpId}
+                        }
+                    }
                 })
 
                 let outOfScopeTargetList=[] as any;
@@ -127,15 +138,22 @@ export default{
                 }
 
                 // for exclusion
-
-                const exclusionObjList = await prisma.bountyExclusion.findMany({
-                    where:{bugBountyProgram:{id:bbpId}}
-                })
-
+                const exclusionConnObjList = await prisma.bountyExclusionConnBugBountyProgram.findMany({
+                    where:{
+                        bugBountyProgram:{
+                            is:{id:bbpId}
+                        }
+                    }
+                });
                 let exclusionValueList = [] as any;
-                for (const exclusionObj of exclusionObjList){
-                    const exclusionValue = exclusionObj.value;
-                    exclusionValueList.push(exclusionValue);
+                for (const exclusionConnObj of exclusionConnObjList){
+                    const eId:number = exclusionConnObj.eId; 
+                    const exclusionObj:ProgramRule|null = await prisma.bountyExclusion.findOne({
+                        where:{id:eId}
+                    })
+                    if(exclusionObj!==null){
+                        exclusionValueList.push(exclusionObj.value);
+                    }
                 }
 
                 return {

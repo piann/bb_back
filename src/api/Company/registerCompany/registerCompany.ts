@@ -53,7 +53,6 @@ export default{
                         companyName,
                         nameId,
                         webPageUrl,
-                        logo:null,
                         description,
                     },
                     

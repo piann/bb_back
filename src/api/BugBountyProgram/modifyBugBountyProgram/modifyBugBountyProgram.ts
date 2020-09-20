@@ -58,8 +58,12 @@ export default{
                     data:{
                         isPrivate,
                         disclosurePolicy,
-                        openDate,
-                        closeDate,
+                        openDate:{
+                            set:openDate
+                        },
+                        closeDate:{
+                            set:closeDate
+                        },
                         isOpen,
                         lowPriceMin,
                         lowPriceMax,

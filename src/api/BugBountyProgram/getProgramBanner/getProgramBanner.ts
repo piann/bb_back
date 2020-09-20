@@ -55,7 +55,11 @@ export default{
                 } = companyObj;
 
                 const submittedReportCount = await prisma.report.count({
-                    where:{bugBountyProgram:{id:bbpId}}
+                    where:{
+                        bugBountyProgram:{
+                            is:{id:bbpId}
+                        }
+                    }
                 })
 
                 const {

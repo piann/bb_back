@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
+import { isAuthenticated } from "../../../middleware";
 
 const prisma = new PrismaClient()
 
@@ -11,7 +12,16 @@ export default{
     Mutation:{
         registerInScopeList: async(_, args:registerInScopeListArgs,{request}):Promise<boolean> =>{
             try{
-                //// add routine for check root
+
+                if(isAuthenticated(request)===false){
+                    return false;
+                }
+                const { user:{role}} = request;
+
+                // only admin can modify progress
+                if(role!==Role.ADMIN){
+                    return false;
+                }
 
                 // note that inScopeTarget format is "TYPE>address"
                 const {

@@ -33,7 +33,9 @@ export default{
                 }
 
                 const reportObj:Report|null = await prisma.report.findOne({
-                    where:{id:rId}
+                    where:{
+                        id:rId
+                    }
                 });
 
                 if(reportObj===null){
@@ -74,7 +76,9 @@ export default{
                 // get recent status
                 const progressStatusObjList = await prisma.progressStatus.findMany({
                     where:{
-                        report:{id:rId},
+                        report:{
+                            is:{id:rId}
+                        },
                     },
                     orderBy:{createdAt:'desc'}
                 });
@@ -84,7 +88,9 @@ export default{
                 // get recent result
                 const reportResultObjList = await prisma.reportResult.findMany({
                     where:{
-                        report:{id:rId},
+                        report:{
+                            is:{id:rId}
+                        },
                     },
                     orderBy:{createdAt:'desc'}
                 });
@@ -98,7 +104,9 @@ export default{
                 // get commentInfoList
                 const commentInfoList = [] as any;
                 const commentObjList = await prisma.reportComment.findMany({
-                    where:{report:{id:rId}},
+                    where:{report:{
+                        is:{id:rId}
+                    }},
                     select:{
                         id:true,
                         content:true,

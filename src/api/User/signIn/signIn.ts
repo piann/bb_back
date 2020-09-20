@@ -72,7 +72,14 @@ export default{
                         const passwordHash:string = user.passwordHash;
                         const isSuccess:boolean = compareSaltedHash(password, passwordHash);
                         if (isSuccess===true){
-                            await prisma.user.update({data:{numberOfLoginFail:0},where:{id:user.id}})
+                            await prisma.user.update({
+                                data:{
+                                    numberOfLoginFail:{
+                                        set:0
+                                    },
+                                },
+                                where:{id:user.id}
+                            })
                             return {
                                 ok:true,
                                 error:null,
@@ -82,7 +89,14 @@ export default{
                             // Password is wrong.
                             console.log("Wrong password")
                             const numberOfLoginFail:number = (user.numberOfLoginFail)+1;
-                            await prisma.user.update({data:{numberOfLoginFail},where:{id:user.id}});
+                            await prisma.user.update({
+                                data:{
+                                    numberOfLoginFail:{
+                                        set:numberOfLoginFail
+                                    }
+                                },
+                                where:{id:user.id}
+                            });
                             return {
                                 ok:false,
                                 error:INVALID_MSG,

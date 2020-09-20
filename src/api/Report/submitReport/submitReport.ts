@@ -55,7 +55,9 @@ export default{
                     const isTargetInProgram:boolean = (await prisma.inScopeTarget.count({
                         where:{
                             id:targetId,
-                            bugBountyProgram:{id:bbpId},
+                            bugBountyProgram:{
+                                is:{id:bbpId}
+                            },
                         }
                     }) >= 1 )
                     if(isTargetInProgram===false){

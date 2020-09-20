@@ -12,8 +12,12 @@ export default{
                 const {userId} = args;
                 // change lock status & company           
                 await prisma.user.update({data:{
-                    isLocked:false,
-                    reasonOfLock:null,
+                    isLocked:{
+                        set:false
+                    },
+                    reasonOfLock:{
+                        set:null
+                    },
                 }, 
                 where:{id:userId}
                 });

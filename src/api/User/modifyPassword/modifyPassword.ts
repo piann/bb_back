@@ -23,9 +23,12 @@ export default{
                     console.log("Wrong Old Password")
                     return false;
                 }
+                
                 await prisma.user.update({
                     data:{
-                        passwordHash:generateSaltedHash(newPassword)
+                        passwordHash:{
+                            set:generateSaltedHash(newPassword)
+                        }
                     },
                     where:{
                         id
