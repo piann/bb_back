@@ -1,5 +1,5 @@
 import { checkUserHasPermissionInBBP, getBBPIdByNameId } from "../../../common";
-import { PrismaClient, Report } from "@prisma/client";
+import { PrismaClient, Report, Role } from "@prisma/client";
 import { isAuthenticated } from "../../../middleware";
 
 const prisma = new PrismaClient()
@@ -24,9 +24,18 @@ export default{
                     return null;
                 }
                 
-                const { user:{id:uId} } = request;
+                const { 
+                    user:{
+                        id:uId,
+                        role
+                    } 
+                } = request;
                 
+                // hacker and admin can report
 
+                if(role!==Role.HACKER && role!==Role.ADMIN){
+                    return null;
+                }
                 
                 // main routine
 

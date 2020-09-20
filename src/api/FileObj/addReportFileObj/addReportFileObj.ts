@@ -1,4 +1,4 @@
-import { PrismaClient, FileCategory} from "@prisma/client";
+import { PrismaClient, FileCategory, Role} from "@prisma/client";
 import path from 'path';
 import { isAuthenticated } from "../../../middleware";
 
@@ -16,26 +16,33 @@ export default{
                 const {
                     user:{
                         id:uId,
+                        role
                     }
                 } = request;
 
+                // hacker and admin can report
 
-                //// for test, no authorization
-                /*
-                const userObj:User|null = await prisma.user.findOne({
-                    where:{id:userId}
-                })
-                
-                
-                // only ADMIN can write widely public file
-                if( userObj==null || userObj.role!==Role.ADMIN){
-                    console.log("forbidden access")
+                if(role!==Role.HACKER && role!==Role.ADMIN){
                     return null;
                 }
-                */
+
+                if(role===Role.HACKER){
+                    // if hacker, check report author is caller
+                    const reportObj = await prisma.report.findOne({
+                        where:{
+                            id:reportId
+                        }
+                    });
+                    
+                    if(reportObj===null){
+                        return null;
+                    }
+                    if(reportObj.authorId!==uId){
+                        return null;
+                    }
+                }
 
                 const fileType = path.extname(fileName);
-                console.log(fileType);////
                 if(fileType!==".zip"){
                     return null;
                 }

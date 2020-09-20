@@ -27,6 +27,13 @@ export default{
 
                 if(fileObj?.isPublic!==true){
                     //// need to add logic for private file
+
+                    return{
+                        ok:false,
+                        fileType:null,
+                        fileName:null,
+                        category:null
+                    }
                 }
 
                 return {

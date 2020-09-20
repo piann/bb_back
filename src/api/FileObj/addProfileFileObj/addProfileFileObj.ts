@@ -21,20 +21,6 @@ export default{
                 } = request;
 
 
-                //// for test, no authorization
-                /*
-                const userObj:User|null = await prisma.user.findOne({
-                    where:{id:userId}
-                })
-                
-                
-                // only ADMIN can write widely public file
-                if( userObj==null || userObj.role!==Role.ADMIN){
-                    console.log("forbidden access")
-                    return null;
-                }
-                */
-
                 const fileType = path.extname(fileName);
 
                 let fileId:string|null=null;

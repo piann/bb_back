@@ -94,7 +94,6 @@ export default{
                     },
                     orderBy:{createdAt:'desc'}
                 });
-                console.log(reportResultObjList);////
                 let resultCode:ResultCode|null = null;
                 if (reportResultObjList.length!==0){
                     resultCode = reportResultObjList[0].resultCode;
