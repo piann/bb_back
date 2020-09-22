@@ -5,7 +5,7 @@ import { loadFilesSync } from '@graphql-tools/load-files';
 import path from "path";
 
 const allTypes:any = loadFilesSync(path.join(__dirname, "/api/**/*.graphql"));
-const allResolvers:any = loadFilesSync(path.join(__dirname, "/api/**/*.ts"));
+const allResolvers:any = loadFilesSync(path.join(__dirname, "/api/**/*.(j|t)s"));
 
 
 const schema:any = makeExecutableSchema({

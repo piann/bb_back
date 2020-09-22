@@ -35,9 +35,17 @@
   },
   "devDependencies": {
     "@prisma/cli": "^2.7.1",
+    "@types/webpack-env": "^1.15.3",
+    "clean-webpack-plugin": "^3.0.0",
+    "gql-merge": "^0.0.6",
     "nodemon": "^2.0.4",
+    "ts-loader": "^8.0.4",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-merge": "^5.1.4",
+    "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
     "start": "babel-node \"dist/server.js \"",
@@ -45,6 +53,9 @@
     "up": "npx prisma migrate up --experimental",
     "generate": "npx prisma generate",
     "sync": "yarn migrate && yarn up && yarn generate",
-    "dev": "npx nodemon -L --exec \"npx ts-node src/server.ts -e ts,graphql\""
+    "dev": "npx nodemon -L --exec \"npx ts-node src/server.ts -e ts,graphql\"",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "postbuild": "cd src && npx copy ./api/**/*.graphql ../dist/api"
   }
 }

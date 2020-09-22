@@ -16,7 +16,7 @@ export default{
     Query:{
         getProgramList: async(_, args:any,{request}):Promise<programInfoForPublic|null> => {
             try{
-
+                console.log("test");//
                 const bugBountyProgramObjList:BugBountyProgram[] = await prisma.bugBountyProgram.findMany({
                     where:{
                         isOpen:true,
