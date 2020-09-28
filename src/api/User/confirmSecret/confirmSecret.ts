@@ -48,7 +48,7 @@ export default{
                 await prisma.user.update({data:{
                     isLocked:false,
                     reasonOfLock:null,
-                    authSecret
+                    authSecret:null
                 }, 
                 where:{id:userId}
                 });

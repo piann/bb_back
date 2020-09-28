@@ -48,7 +48,8 @@
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
-    "start": "babel-node \"dist/server.js \"",
+    "start":"node ./dist/server.js",
+    "_legacy": "babel-node \"dist/server.js \"",
     "migrate": "npx prisma migrate save --name init --experimental",
     "up": "npx prisma migrate up --experimental",
     "generate": "npx prisma generate",
