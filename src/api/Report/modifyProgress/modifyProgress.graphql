@@ -2,5 +2,5 @@ type Mutation{
     modifyProgress(
         rId:String!
         progressIdx:Int!
-    ): String
+    ): Boolean
 }
