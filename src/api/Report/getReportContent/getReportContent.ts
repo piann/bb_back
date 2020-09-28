@@ -42,6 +42,7 @@ export default{
                         location:true,
                         enviroment:true,
                         description:true,
+                        additionalText:true,
                         dump:true,
                         cvssScore:true,
                         target:{
