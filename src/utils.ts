@@ -360,7 +360,7 @@ export const makePasswordResetEmail = ({
   passwordResetSecret
 })=>{
 
-  const linkAddress = `https://zerowhale.io/confirm_reset/${passwordResetSecret}/`;
+  const linkAddress = `https://zerowhale.io/reset_password/${passwordResetSecret}/`;
   const authEmailContent = `
   <table
   width="100%"
@@ -480,8 +480,9 @@ export const makePasswordResetEmail = ({
                                 line-height: 50px;
                                 text-align: center;
                                 text-decoration: none;
-                                width: 200px;
                               "
+                              width="200px"
+                              height="80px"
                               target="_blank"
                               >Go</a
                             >
