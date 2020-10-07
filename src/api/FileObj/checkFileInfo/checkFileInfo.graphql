@@ -7,7 +7,6 @@ type checkFileInfoResponse{
 
 type Query{
     checkFileInfo(
-        userId:String
         fileId:String!
     ):checkFileInfoResponse
 }

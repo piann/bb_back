@@ -51,7 +51,7 @@ export default{
                         isPublic:true,
                         fileName,
                         fileType,
-                        category:FileCategory.OTHERS,
+                        category:FileCategory.REPORT,
                         uploadUser:{
                             connect:{id:uId}
                         }
