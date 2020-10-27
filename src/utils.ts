@@ -90,6 +90,14 @@ interface authSecretArgs{
     secret:string;
 }
 
+interface businessRegisterArgs{
+  email:string;
+  companyName:string;
+  realName:string;
+  jobTitle:string;
+  phone:string;
+}
+
 export const sendAuthSecretMail = async ({
     email,
     nickName,
@@ -119,6 +127,24 @@ export const sendPasswordResetSecretMail = async ({
       toEmail:email,
       title:"Reset your zerowhale password",
       content:makePasswordResetEmail({email, nickName, passwordResetSecret}),
+  });
+  return result;      
+}
+
+export const sendBusinessRegisterMail = async ({
+  email,
+  companyName,
+  realName,
+  jobTitle,
+  phone
+}:businessRegisterArgs):Promise<boolean> => {
+
+
+  const result = await sendEmail({
+      fromInfo:"zerowhale team <no-reply>",
+      toEmail:"dspark@pastelplanet.space",
+      title:"Register Business",
+      content:makeBusinessRegisterEmail({email, companyName, realName, jobTitle, phone}),
   });
   return result;      
 }
@@ -555,5 +581,164 @@ export const makePasswordResetEmail = ({
 </table>
 `
 
-    return authEmailContent;
+return authEmailContent;
+}
+
+
+
+export const makeBusinessRegisterEmail = ({
+  email,
+  companyName,
+  realName,
+  jobTitle,
+  phone
+})=>{
+
+  const authEmailContent = `
+  <table
+  width="100%"
+  border="0"
+  cellspacing="0"
+  cellpadding="0"
+  style="width: 100% !important;"
+>
+  <tbody>
+    <tr>
+      <td align="center">
+        <table
+          style="border: 1px solid #eaeaea; border-radius: 5px; margin: 40px 0;"
+          width="600"
+          border="0"
+          cellspacing="0"
+          cellpadding="40"
+        >
+          <tbody>
+            <tr>
+              <td align="center">
+                <div
+                  style="
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                      'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+                      'Droid Sans', 'Helvetica Neue', sans-serif;
+                    text-align: left;
+                    width: 465px;
+                  "
+                >
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="width: 100% !important;"
+                  >
+                    <tbody>
+                      <tr>
+                        <td align="center">
+                          <div>
+                          </div>
+                          <h1
+                            style="
+                              color: #000;
+                              font-family: -apple-system, BlinkMacSystemFont,
+                                'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+                                'Cantarell', 'Fira Sans', 'Droid Sans',
+                                'Helvetica Neue', sans-serif;
+                              font-size: 24px;
+                              font-weight: normal;
+                              margin: 30px 0;
+                              margin-top: 15px;
+                              padding: 0;
+                            "
+                          >
+                            Register Business for
+                            <b><span>${companyName}</span></b>
+                          </h1>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                  <p
+                    style="
+                      color: #000;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                        'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+                        'Droid Sans', 'Helvetica Neue', sans-serif;
+                      font-size: 14px;
+                      line-height: 24px;
+                    "
+                  >
+                    Business Email Address :
+                    <span>${email}</span>
+                  </p>
+                  
+                  <p
+                    style="
+                      color: #000;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                        'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+                        'Droid Sans', 'Helvetica Neue', sans-serif;
+                      font-size: 14px;
+                      line-height: 24px;
+                    "
+                  >
+                    Company Name :
+                    <span>${companyName}</span>
+                  </p>
+
+                  <p
+                  style="
+                    color: #000;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                      'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+                      'Droid Sans', 'Helvetica Neue', sans-serif;
+                    font-size: 14px;
+                    line-height: 24px;
+                  "
+                >
+                  Real Name :
+                  <span>${realName}</span>
+                </p>
+
+                <p
+                style="
+                  color: #000;
+                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+                    'Droid Sans', 'Helvetica Neue', sans-serif;
+                  font-size: 14px;
+                  line-height: 24px;
+                "
+              >
+                Job title :
+                <span>${jobTitle}</span>
+              </p>
+
+              <p
+              style="
+                color: #000;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+                  'Droid Sans', 'Helvetica Neue', sans-serif;
+                font-size: 14px;
+                line-height: 24px;
+              "
+            >
+              Phone :
+              <span>${phone}</span>
+            </p>
+
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`
+
+return authEmailContent;
 }

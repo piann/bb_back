@@ -1,0 +1,9 @@
+type Mutation{
+    sendBusinessMail(
+        email:String!
+        realName: String
+        companyName: String!
+        jobTitle: String
+        phone: String
+    ): Boolean
+}
