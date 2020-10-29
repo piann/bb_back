@@ -15,6 +15,7 @@ type getMyProfileResponse{
     credit:Int
     numOfVul:Int
     reportInfoList:[reportInfo]
+    cNameId:String
 }
 
 type Query{

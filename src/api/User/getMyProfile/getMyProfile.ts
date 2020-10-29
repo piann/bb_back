@@ -21,6 +21,7 @@ interface getMyProfileResponse{
     credit?:Number
     numOfVul?:Number
     reportInfoList:[reportInfo]|null;
+    cNameId:String|undefined|null;
 }
 
 
@@ -41,17 +42,46 @@ export default{
                         nickName,
                         email,
                         picId,
-                        role
+                        role,
                     }
                 } = request;
 
-                if(role!==Role.HACKER){
+                if(role===Role.HACKER){
                     return {
                         role,
                         email,
                         nickName,
                         profilePictureId:picId,
                         reportInfoList:null,
+                        cNameId:null,
+                    };
+                }
+
+                if(role===Role.BUSINESS){
+
+                    const getUserObj = await prisma.user.findOne({
+                        where:{
+                            email:email
+                        },
+                    });
+    
+                    const companyName = getUserObj?.nickName;
+
+                    const getCompanyObj = await prisma.company.findOne({
+                        where:{
+                            companyName:companyName
+                        },
+                    });
+    
+                    const cNameId = getCompanyObj?.nameId;
+
+                    return {
+                        role,
+                        email,
+                        nickName,
+                        profilePictureId:picId,
+                        reportInfoList:null,
+                        cNameId,
                     };
                 }
 
@@ -136,6 +166,7 @@ export default{
                         resultCode = reportResultObjList[0].resultCode;
                         
                     }
+
                     // make reportInfo and push to list
                     reportInfoList.push({
                         reportId,
@@ -143,7 +174,7 @@ export default{
                         resultCode,
                         companyName,
                         submitDate,
-                        vulName,
+                        vulName
                     });
 
                 }
@@ -155,7 +186,8 @@ export default{
                     profilePictureId:picId,
                     reportInfoList,
                     credit,
-                    numOfVul
+                    numOfVul,
+                    cNameId:null
                 }
 
                 return res;
