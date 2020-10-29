@@ -28,7 +28,7 @@ interface getBusinessBountyPageResponse{
 
 export default{
     Query:{
-        getBusinessBountyPage: async(_, args:any,{request }):Promise<getBusinessBountyPageResponse|null> => {
+        getBusinessBountyPage: async(_, args:any,{request }):Promise<getBusinessBountyPageResponse|null|boolean> => {
             try{
 
                 let { nameId, bbpId } = args;
