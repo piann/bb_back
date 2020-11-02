@@ -46,14 +46,14 @@ export default{
                     }
                 } = request;
 
-                if(role===Role.HACKER){
+                if(role===Role.ADMIN){
                     return {
                         role,
                         email,
                         nickName,
                         profilePictureId:picId,
                         reportInfoList:null,
-                        cNameId:null,
+                        cNameId:null
                     };
                 }
 
@@ -65,7 +65,7 @@ export default{
                         },
                     });
     
-                    const companyName = getUserObj?.nickName;
+                    const companyName = getUserObj?.nickName;          
 
                     const getCompanyObj = await prisma.company.findOne({
                         where:{
