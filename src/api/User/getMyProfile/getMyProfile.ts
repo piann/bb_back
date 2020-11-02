@@ -57,7 +57,7 @@ export default{
                     };
                 }
 
-                if(role===Role.BUSINESS){
+                else if(role===Role.BUSINESS){
 
                     const getUserObj = await prisma.user.findOne({
                         where:{
@@ -86,111 +86,115 @@ export default{
                 }
 
                 // get Information Hacker Spec
-
-                const hackerInfoObj = await prisma.hackerInfo.findOne({
-                    where:{
-                        userId:uId
-                    }
-                });
-                const credit = hackerInfoObj?.credit;
-
-                const numOfVul = await prisma.report.count({
-                    where:{
-                        authorId:uId,
-                        cvssScore:{
-                            not:null
-                        }
-                    }
-                })
-
-                // get information of reports
-                const submittedReportList = await prisma.report.findMany({
-                    where:{
-                        authorId:uId
-                    }
-                });
-
-                let reportInfoList = [] as any;
-
-
-                for (const submittedReport of submittedReportList){
-                    const reportId = submittedReport.id;
-                    const submitDate = submittedReport.createdAt;
-                    console.log(submittedReport)
-                    const vId = submittedReport.vulId;
-                    const vulObj = await prisma.vulnerability.findOne({
+                else if(role===Role.HACKER){
+                    const hackerInfoObj = await prisma.hackerInfo.findOne({
                         where:{
-                            id:vId
+                            userId:uId
+                        }
+                    });
+                    const credit = hackerInfoObj?.credit;
+    
+                    const numOfVul = await prisma.report.count({
+                        where:{
+                            authorId:uId,
+                            cvssScore:{
+                                not:null
+                            }
                         }
                     })
-                    const vulName = vulObj?.name;
-
-                    const relatedBbpId = submittedReport.bbpId;
-                    
-
-                    const bbpObj= await prisma.bugBountyProgram.findOne({
-                        where:{id:relatedBbpId},
-                        select:{
-                            ownerCompany:{
-                                select:{
-                                    companyName:true
-                                }
-                            }
+    
+                    // get information of reports
+                    const submittedReportList = await prisma.report.findMany({
+                        where:{
+                            authorId:uId
                         }
                     });
-                    const companyName = bbpObj?.ownerCompany.companyName;
-                    
-                    // get recent status
-                    const progressStatusObjList = await prisma.progressStatus.findMany({
-                        where:{
-                            report:{
-                                id:submittedReport.id
+    
+                    let reportInfoList = [] as any;
+    
+    
+                    for (const submittedReport of submittedReportList){
+                        const reportId = submittedReport.id;
+                        const submitDate = submittedReport.createdAt;
+                        console.log(submittedReport)
+                        const vId = submittedReport.vulId;
+                        const vulObj = await prisma.vulnerability.findOne({
+                            where:{
+                                id:vId
                             }
-                        },
-                        orderBy:{createdAt:'desc'}
-                    });
-                    
-                    const status = progressStatusObjList[0].progressIdx
-
-                    // get recent result
-                    const reportResultObjList = await prisma.reportResult.findMany({
-                        where:{
-                            report:{
-                                id:submittedReport.id
-                            }
-                        },
-                        orderBy:{createdAt:'desc'}
-                    });
-                    let resultCode:ResultCode|null = null;
-                    if (reportResultObjList.length!==0){
-                        resultCode = reportResultObjList[0].resultCode;
+                        })
+                        const vulName = vulObj?.name;
+    
+                        const relatedBbpId = submittedReport.bbpId;
                         
+    
+                        const bbpObj= await prisma.bugBountyProgram.findOne({
+                            where:{id:relatedBbpId},
+                            select:{
+                                ownerCompany:{
+                                    select:{
+                                        companyName:true
+                                    }
+                                }
+                            }
+                        });
+                        const companyName = bbpObj?.ownerCompany.companyName;
+                        
+                        // get recent status
+                        const progressStatusObjList = await prisma.progressStatus.findMany({
+                            where:{
+                                report:{
+                                    id:submittedReport.id
+                                }
+                            },
+                            orderBy:{createdAt:'desc'}
+                        });
+                        
+                        const status = progressStatusObjList[0].progressIdx
+    
+                        // get recent result
+                        const reportResultObjList = await prisma.reportResult.findMany({
+                            where:{
+                                report:{
+                                    id:submittedReport.id
+                                }
+                            },
+                            orderBy:{createdAt:'desc'}
+                        });
+                        let resultCode:ResultCode|null = null;
+                        if (reportResultObjList.length!==0){
+                            resultCode = reportResultObjList[0].resultCode;
+                            
+                        }
+    
+                        // make reportInfo and push to list
+                        reportInfoList.push({
+                            reportId,
+                            status,
+                            resultCode,
+                            companyName,
+                            submitDate,
+                            vulName
+                        });
+    
                     }
-
-                    // make reportInfo and push to list
-                    reportInfoList.push({
-                        reportId,
-                        status,
-                        resultCode,
-                        companyName,
-                        submitDate,
-                        vulName
-                    });
-
+    
+                   return {
+                        role,
+                        email,
+                        nickName,
+                        profilePictureId:picId,
+                        reportInfoList,
+                        credit,
+                        numOfVul,
+                        cNameId:null
+                    };
                 }
-
-                const res = {
-                    role,
-                    email,
-                    nickName,
-                    profilePictureId:picId,
-                    reportInfoList,
-                    credit,
-                    numOfVul,
-                    cNameId:null
+                else {
+                    return null;
                 }
+                
 
-                return res;
             }catch(err){
                 console.log(err);
                 return null;
