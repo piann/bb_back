@@ -23,15 +23,26 @@ interface getBusinessBountyPageResponse{
     firstReportDate:Date|null;
     recentReportDate:Date|null;
     reportInfoList:[reportInfo]
+    cNameId:String|null;
 }
 
 
 export default{
     Query:{
-        getBusinessBountyPage: async(_, args:any,{request }):Promise<getBusinessBountyPageResponse|null|boolean> => {
+        getBusinessBountyPage: async(_, args:any,{request }):Promise<getBusinessBountyPageResponse|null|undefined> => {
             try{
 
                 let { nameId, bbpId } = args;
+                let submittedReportCount = 0;
+                let totalReward:number = 0;
+                let totalVulnerabilityCount:number = 0;
+                let rewardedVulnerabilityCount:number = 0;
+                let joinedHackerIdList = [] as any;
+                let firstReportDate:Date|null=null ;
+                let recentReportDate:Date|null=null;
+                let reportInfoList = [] as any;
+                let joinedHackerCount = 0;
+                let cNameId:String|null=null;
                 
                 if(bbpId==undefined && nameId!==undefined){
                     bbpId = await getBBPIdByNameId(nameId);
@@ -42,9 +53,15 @@ export default{
                         id:bbpId
                     }
                 });
+                
                 if(bugBountyProgramObj===null){
                     return null
                 }
+                // for getting time info
+                const {
+                    openDate,
+                    closeDate,
+                } = bugBountyProgramObj;
                 
                 const isAuth:boolean = isAuthenticated(request);
                 if(isAuth===false){
@@ -60,6 +77,9 @@ export default{
                     }
                 } = request;
 
+                cNameId="null";
+
+
                 if(role!==Role.ADMIN){
                     // ADMIN all pass this check routine
 
@@ -70,6 +90,7 @@ export default{
                     } else {
                         // if Business account, they should be owner company
                         const ownerCompanyId = bugBountyProgramObj.ownerCompanyId
+
                         const isOwner:boolean = (await prisma.businessInfo.count({
                             where:{
                                 user:{
@@ -84,41 +105,48 @@ export default{
                             console.log("UnAuthorized access 2");
                             return null;
                         }
+
+                        // if isOwner is true, get cNameId
+                        const getcNameId = await prisma.company.findOne({
+                            where:{
+                                id:ownerCompanyId
+                            }
+                        })
+
+                        cNameId = getcNameId?.nameId || null;
+                        
                     }
                 }
                 // main logic
-
+                
                 /* 
-                    Want to get totalVulnerabilityCount
-                    1. recent ProgressStatus.progressIdx is 3 (0,1,2,3 and 3 is resolved)
-                    2. recent ReportResult.resultCode is NOT_TARGET_BOUNTY or TARGET_BOUNTY
-
-                    Want to get rewardedVulnerabilityCount
-                    1. recent ProgressStatus.progressIdx is 3 (0,1,2,3 and 3 is resolved)
-                    2. recent ReportResult.resultCode is NOT_TARGET_BOUNTY or TARGET_BOUNTY
-                    
+                Want to get totalVulnerabilityCount
+                1. recent ProgressStatus.progressIdx is 3 (0,1,2,3 and 3 is resolved)
+                2. recent ReportResult.resultCode is NOT_TARGET_BOUNTY or TARGET_BOUNTY
+                
+                Want to get rewardedVulnerabilityCount
+                1. recent ProgressStatus.progressIdx is 3 (0,1,2,3 and 3 is resolved)
+                2. recent ReportResult.resultCode is NOT_TARGET_BOUNTY or TARGET_BOUNTY
+                
                 */
-
-                const submittedReportList = await prisma.report.findMany({
-                    where:{
-                        bugBountyProgram:{
-                            id:bbpId,
+               
+               const submittedReportList = await prisma.report.findMany({
+                   where:{
+                       bugBountyProgram:{
+                           id:bbpId,
                         }
                     },
                     orderBy:{createdAt:'desc'}
                 })
-
-                const submittedReportCount = submittedReportList.length;
-
-                let totalReward:number = 0;
-                let totalVulnerabilityCount:number = 0;
-                let rewardedVulnerabilityCount:number = 0;
-                let joinedHackerIdList = [] as any;
+                
+                submittedReportCount = submittedReportList.length;
+                
+                
                 for (const submittedReport of submittedReportList){
                     totalReward += submittedReport.bountyAmount;
-
+                    
                     joinedHackerIdList.push(submittedReport.authorId);
-
+                    
                     // 1. get Recent ProgressStatus
                     const progressStatusObjList = await prisma.progressStatus.findMany({
                         where:{
@@ -157,21 +185,13 @@ export default{
 
 
                 }
-                // for getting time info
-                const {
-                    openDate,
-                    closeDate,
-                } = bugBountyProgramObj;
 
 
-                let firstReportDate:Date|null=null ;
-                let recentReportDate:Date|null=null;
                 if(submittedReportList.length!==0){
                     recentReportDate = submittedReportList[0].createdAt;
                     firstReportDate = submittedReportList[submittedReportList.length - 1].createdAt;
                 }
 
-                let reportInfoList = [] as any;
                 for (const submittedReport of submittedReportList){
                     const reportId = submittedReport.id;
                     const authorObj = await prisma.user.findOne({
@@ -220,7 +240,7 @@ export default{
 
                 }
                 const uJoinedHackerIdList = Array.from(new Set(joinedHackerIdList))
-                const joinedHackerCount= uJoinedHackerIdList.length;
+                joinedHackerCount = uJoinedHackerIdList.length;
 
                 return {
                     submittedReportCount,
@@ -233,6 +253,7 @@ export default{
                     firstReportDate,
                     recentReportDate,
                     reportInfoList,
+                    cNameId
                }
 
             }catch(err){

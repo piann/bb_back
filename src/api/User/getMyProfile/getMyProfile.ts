@@ -59,21 +59,21 @@ export default{
 
                 else if(role===Role.BUSINESS){
 
-                    const getUserObj = await prisma.user.findOne({
+                    const businessInfoObj = await prisma.businessInfo.findOne({
                         where:{
-                            email:email
-                        },
-                    });
-    
-                    const companyName = getUserObj?.nickName;          
+                            userId:uId
+                        }
+                    })
 
-                    const getCompanyObj = await prisma.company.findOne({
+                    const companyId = businessInfoObj?.companyId;          
+
+                    const companyObj = await prisma.company.findOne({
                         where:{
-                            companyName:companyName
-                        },
-                    });
-    
-                    const cNameId = getCompanyObj?.nameId;
+                            id:companyId,
+                        }
+                    })
+
+                    const cNameId = companyObj?.nameId;      
 
                     return {
                         role,

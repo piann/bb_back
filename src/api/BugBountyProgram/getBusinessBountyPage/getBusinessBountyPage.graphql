@@ -16,6 +16,7 @@ type getBusinessBountyPageResponse{
     firstReportDate:DateTime
     recentReportDate:DateTime
     reportInfoList:[reportInfo]
+    cNameId:String!
 }
 
 type Query{
