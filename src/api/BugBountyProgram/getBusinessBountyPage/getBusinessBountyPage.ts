@@ -23,7 +23,7 @@ interface getBusinessBountyPageResponse{
     firstReportDate:Date|null;
     recentReportDate:Date|null;
     reportInfoList:[reportInfo]
-    isInitBugbounty:Boolean|null
+    isInitBugBounty:Boolean|null
 }
 
 
@@ -42,7 +42,7 @@ export default{
                 let recentReportDate:Date|null=null;
                 let reportInfoList = [] as any;
                 let joinedHackerCount = 0;
-                let isInitBugbounty:boolean|null = null;
+                let isInitBugBounty:boolean|null = null;
 
 
                 // main logic
@@ -61,21 +61,21 @@ export default{
                 } = request;
                 
 
-                const getUserId = await prisma.user.findOne({
+                const userObj = await prisma.user.findOne({
                         where:{
-                            email:email
+                            email
                         }
                 });
                 
-                const userId = getUserId?.id;
+                const userId = userObj?.id;
                 
-                const checkCompanyPermission = await prisma.businessInfo.findOne({
+                const businessInfoObj = await prisma.businessInfo.findOne({
                     where:{
-                        userId:userId
+                        userId
                     }
                 });
                 
-                const companyId = checkCompanyPermission?.companyId;       
+                const companyId = businessInfoObj?.companyId;       
             
 
 
@@ -84,8 +84,8 @@ export default{
                 }
 
 
-                // 1. role == admin or company in progress Bugbounty
-                if(role === Role.ADMIN || bbpId !== null){
+                // 1. if exist bugbounty program in progress
+                if(bbpId !== null){
                     const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
                         where:{
                             id:bbpId
@@ -274,7 +274,7 @@ export default{
                         firstReportDate,
                         recentReportDate,
                         reportInfoList,
-                        isInitBugbounty
+                        isInitBugBounty
                    }
                 
 
@@ -292,13 +292,10 @@ export default{
                         firstReportDate,
                         recentReportDate,
                         reportInfoList,
-                        isInitBugbounty:false
+                        isInitBugBounty:false
                    }
                 }
-                // 3. unauthorized account
-                else {
-                    return null;
-                }
+                
 
         
             } catch(err){

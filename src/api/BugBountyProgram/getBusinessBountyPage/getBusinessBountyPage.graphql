@@ -16,7 +16,7 @@ type getBusinessBountyPageResponse{
     firstReportDate:DateTime
     recentReportDate:DateTime
     reportInfoList:[reportInfo]
-    isInitBugbounty:Boolean
+    isInitBugBounty:Boolean
 }
 
 type Query{
