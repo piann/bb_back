@@ -7,7 +7,7 @@ type getReportContentResponse{
     assetName:String # consider asset is Others
     title:String
     description:String
-    cvssScore:Int
+    cvssScore:Float
     additionalText:String
     location:String
     enviroment:String
