@@ -295,7 +295,11 @@ export default{
                         isInitBugBounty:false
                    }
                 }
-                
+
+                else{
+                    return null;
+                }
+
 
         
             } catch(err){
