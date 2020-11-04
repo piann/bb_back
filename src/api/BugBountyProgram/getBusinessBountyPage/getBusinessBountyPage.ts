@@ -1,5 +1,5 @@
 import { isAuthenticated } from "../../../middleware";
-import { PrismaClient, BugBountyProgram, Role, ResultCode } from "@prisma/client";
+import { PrismaClient, BugBountyProgram, Role, ResultCode, Company } from "@prisma/client";
 import { getBBPIdByNameId } from "../../../common";
 
 const prisma = new PrismaClient()
@@ -42,8 +42,7 @@ export default{
                 let recentReportDate:Date|null=null;
                 let reportInfoList = [] as any;
                 let joinedHackerCount = 0;
-                let isInitBugBounty:boolean|null = null;
-
+                let isPermitted:boolean = false;
 
                 // main logic
                 // 1. admin or company in progress Bugbounty -> return getBusinessBountyPageResponse
@@ -56,45 +55,93 @@ export default{
                     user:{
                         id:uId,
                         role,
-                        email
                     }
                 } = request;
                 
 
-                const userObj = await prisma.user.findOne({
-                        where:{
-                            email
-                        }
-                });
-                
-                const userId = userObj?.id;
-                
-                const businessInfoObj = await prisma.businessInfo.findOne({
-                    where:{
-                        userId
-                    }
-                });
-                
-                const companyId = businessInfoObj?.companyId;       
-            
-
-
                 if(bbpId==undefined && nameId!==undefined){
+                    
+                    // if there is no company of such nameId, return null
+                    const companyObj:Company|null = await prisma.company.findOne({
+                        where:{
+                            nameId
+                        }
+                    });
+
+                    if(companyObj===null){
+                        return null;
+                    }
+    
+
                     bbpId = await getBBPIdByNameId(nameId);
+                    
                 }
 
 
-                // 1. if exist bugbounty program in progress
-                if(bbpId !== null){
+                // check if user is permitted for bug bounty
+                if(role===Role.ADMIN){
+                    // ADMIN all pass this check routine
+                    isPermitted = true;
+                }
+
+                else if(role===Role.BUSINESS){
+
+                    // if Business account, they should be owner company
+                    
+                    const isOwner:boolean = (await prisma.businessInfo.count({
+                        where:{
+                                user:{
+                                    id:uId
+                                },
+                                company:{
+                                    nameId
+                                }
+                            }
+                        }) >= 1)
+                        console.log(isOwner);////
+                        if (isOwner===true){
+                            isPermitted = true;
+                        } else {
+                            console.log("UnAuthorized access 2");
+                        }
+                        
+                }
+                
+
+                // 1. not permitted user
+                if (isPermitted===false){
+                    return null;
+                }
+                // 2. company not in progress Bugbounty
+                else if(bbpId === null){
+                    return {
+                        submittedReportCount,
+                        totalVulnerabilityCount,
+                        rewardedVulnerabilityCount,
+                        totalReward,
+                        joinedHackerCount,
+                        openDate:undefined,
+                        closeDate:undefined,
+                        firstReportDate,
+                        recentReportDate,
+                        reportInfoList,
+                        isInitBugBounty:false
+                   }
+                }          
+
+                // 3. if exist bugbounty program in progress
+                else{
+
                     const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
                         where:{
                             id:bbpId
                         }
                     });
-    
+
                     if(bugBountyProgramObj===null){
                         return null;
-                    } 
+                    }
+                    
       
                     // for getting time info
                     const {
@@ -107,36 +154,7 @@ export default{
                         // non login user is forbidden to access
                         return null;
                     }
-    
-    
-                    if(role!==Role.ADMIN){
-                        // ADMIN all pass this check routine
-    
-                        if(role!==Role.BUSINESS){
-                            console.log("UnAuthorized access 1");
-                            return null;
                     
-                        } else {
-                            // if Business account, they should be owner company
-                            const ownerCompanyId = bugBountyProgramObj.ownerCompanyId
-    
-                            const isOwner:boolean = (await prisma.businessInfo.count({
-                                where:{
-                                    user:{
-                                        id:uId
-                                    },
-                                    company:{
-                                        id:ownerCompanyId
-                                    }
-                                }
-                            }) >= 1)
-                            if (isOwner===false){
-                                console.log("UnAuthorized access 2");
-                                return null;
-                            }
-                            
-                        }
-                    }
                 
                     // main logic
                     
@@ -274,32 +292,11 @@ export default{
                         firstReportDate,
                         recentReportDate,
                         reportInfoList,
-                        isInitBugBounty
+                        isInitBugBounty:true,
                    }
                 
 
                 }
-                // 2. company not in progress Bugbounty
-                else if(bbpId === null && companyId !== null){
-                    return {
-                        submittedReportCount,
-                        totalVulnerabilityCount,
-                        rewardedVulnerabilityCount,
-                        totalReward,
-                        joinedHackerCount,
-                        openDate:undefined,
-                        closeDate:undefined,
-                        firstReportDate,
-                        recentReportDate,
-                        reportInfoList,
-                        isInitBugBounty:false
-                   }
-                }
-
-                else{
-                    return null;
-                }
-
 
         
             } catch(err){
