@@ -22,8 +22,38 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
         }
         const isPrivate = bugBountyProgramObj.isPrivate;
         const bbpCompanyId = bugBountyProgramObj.ownerCompanyId;
+        const requiredTrustLevel = bugBountyProgramObj.requiredTrustLevel;
         if(isPrivate===false){
-            return true;
+
+                let userTrustLevel:number = 0;
+                const isAuth:boolean = isAuthenticated(request);
+                if(isAuth===true){
+                    const { 
+                        user:{
+                            id,
+                            role
+                        }
+                    } = request;
+                    if(role===Role.HACKER){
+                        const hackerInfoObj = await prisma.hackerInfo.findOne({
+                            where:{
+                                userId:id
+                            }
+                        })
+
+                        if(hackerInfoObj!==null){
+                            userTrustLevel = hackerInfoObj.trustLevel;
+                        }
+                    }
+
+                }
+                
+                if(userTrustLevel >= requiredTrustLevel){
+                    return true;
+                } else {
+                    return false;
+                }
+
         }else{
             /* if program is private, 
                 HACKER : check if user is in permitted-user-list

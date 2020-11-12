@@ -42,6 +42,7 @@ export default{
                     fatalPriceMax,
                     introduction,
                     managedBy,
+                    requiredTrustLevel,
                 } = args;
 
                 let openDate:Date|undefined;
@@ -71,6 +72,7 @@ export default{
                         fatalPriceMax,
                         introduction,
                         managedBy,
+                        requiredTrustLevel,
                     },
                     where:{
                         id:bbpId
