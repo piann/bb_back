@@ -1,4 +1,6 @@
-import { PrismaClient, BugBountyProgram } from "@prisma/client";
+import { PrismaClient, BugBountyProgram, Role } from "@prisma/client";
+import { isAuthenticated } from "../../../middleware";
+
 const prisma = new PrismaClient()
 
 interface programInfoForPublic{
@@ -16,59 +18,97 @@ export default{
     Query:{
         getProgramList: async(_, args:any,{request}):Promise<programInfoForPublic|null> => {
             try{
-                console.log("test");//
+                
+
+                // get user trustLevel for filtering BBP
+                let userTrustLevel:number = 0;
+                const isAuth:boolean = isAuthenticated(request);
+                if(isAuth===true){
+                    const { 
+                        user:{
+                            id,
+                            role
+                        }
+                    } = request;
+                    if(role===Role.HACKER){
+                        const hackerInfoObj = await prisma.hackerInfo.findOne({
+                            where:{
+                                userId:id
+                            }
+                        })
+
+                        if(hackerInfoObj!==null){
+                            userTrustLevel = hackerInfoObj.trustLevel;
+                        }
+                    }
+
+                }
+
+
+                // if user trust level is lower than required trust level, push null to result list
                 const bugBountyProgramObjList:BugBountyProgram[] = await prisma.bugBountyProgram.findMany({
                     where:{
                         isOpen:true,
                         isPrivate:false,
                     }
                 })
+
+
                 let resultList = [] as any;
                 for (const bugBountyProgramObj of bugBountyProgramObjList){
-                    const bbpId = bugBountyProgramObj.id;
 
-                    let programInfo = {
-                        logoId:undefined,
-                        companyName:undefined,
-                        nameId:undefined,
-                        description:undefined,
-                        inScopeTypeList:undefined,
-                        bountyMin:undefined,
-                        bountyMax:undefined,
-                        managedBy:undefined,
-                    } as any;
-                    const cId = bugBountyProgramObj.ownerCompanyId;
-                    const companyObj = await prisma.company.findOne({
-                        where:{id:cId}
-                    });
+                    const requiredTrustLevel = bugBountyProgramObj.requiredTrustLevel;
 
-                    programInfo.logoId = companyObj?.logoId || null;
-                    programInfo.companyName = companyObj?.companyName || null;
-                    programInfo.nameId = companyObj?.nameId || null ;
-                    programInfo.description = companyObj?.description || null;
+                    if(userTrustLevel<requiredTrustLevel){
 
-                    const inScopeTargetList = await prisma.inScopeTarget.findMany({
-                        where:{
-                            bugBountyProgram:{
-                                    id:bbpId
+                        resultList.push(null);
+                    } else {
+                        const bbpId = bugBountyProgramObj.id;
+
+                        let programInfo = {
+                            logoId:undefined,
+                            companyName:undefined,
+                            nameId:undefined,
+                            description:undefined,
+                            inScopeTypeList:undefined,
+                            bountyMin:undefined,
+                            bountyMax:undefined,
+                            managedBy:undefined,
+                        } as any;
+                        const cId = bugBountyProgramObj.ownerCompanyId;
+                        const companyObj = await prisma.company.findOne({
+                            where:{id:cId}
+                        });
+    
+                        programInfo.logoId = companyObj?.logoId || null;
+                        programInfo.companyName = companyObj?.companyName || null;
+                        programInfo.nameId = companyObj?.nameId || null ;
+                        programInfo.description = companyObj?.description || null;
+    
+                        const inScopeTargetList = await prisma.inScopeTarget.findMany({
+                            where:{
+                                bugBountyProgram:{
+                                        id:bbpId
+                                }
+                            }, 
+                            select:{
+                                type:true,
                             }
-                        }, 
-                        select:{
-                            type:true,
+                        });
+                        
+                        let typeList = [] as any;
+                        for(const inScopeTarget of inScopeTargetList){
+                            typeList.push(inScopeTarget.type);
                         }
-                    });
-                    
-                    let typeList = [] as any;
-                    for(const inScopeTarget of inScopeTargetList){
-                        typeList.push(inScopeTarget.type);
+                        programInfo.inScopeTypeList = Array.from(new Set(typeList));
+    
+                        programInfo.bountyMin = bugBountyProgramObj.lowPriceMin;
+                        programInfo.bountyMax = bugBountyProgramObj.fatalPriceMax;
+                        programInfo.managedBy = bugBountyProgramObj.managedBy;
+    
+                        resultList.push(programInfo);
                     }
-                    programInfo.inScopeTypeList = Array.from(new Set(typeList));
-
-                    programInfo.bountyMin = bugBountyProgramObj.lowPriceMin;
-                    programInfo.bountyMax = bugBountyProgramObj.fatalPriceMax;
-                    programInfo.managedBy = bugBountyProgramObj.managedBy;
-
-                    resultList.push(programInfo);
+                    
                 }
                 
                 return resultList;

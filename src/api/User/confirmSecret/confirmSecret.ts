@@ -52,6 +52,12 @@ export default{
                 }, 
                 where:{id:userId}
                 });
+
+                await prisma.hackerInfo.update({data:{
+                    trustLevel:1
+                },
+                where:{userId}
+                })
                 
                 return {
                     ok:true,
