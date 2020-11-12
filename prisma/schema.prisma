@@ -76,6 +76,8 @@ model HackerInfo{
   userId String @unique
   credit Int @default(value:0)
   totalBounty Int @default(value:0)
+  trustLevel Float?
+  note String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
 }
@@ -123,6 +125,7 @@ model BugBountyProgram{
   introduction String @default(value:"introduction")
   inScopeList InScopeTarget[]
   outOfScopeList OutOfScopeTarget[]
+  requiredTrustLevel Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
   reportList Report[]
@@ -264,6 +267,7 @@ model Report{
   evaluationText String?
   commentList ReportComment[]
   note String?
+  isDisclosed Boolean?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
   //
