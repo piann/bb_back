@@ -1,6 +1,5 @@
-import { PrismaClient, BugBountyProgram, Role } from "@prisma/client";
-import { isAuthenticated } from "../../../middleware";
-import { checkUserHasPermissionInBBP } from "src/common";
+import { PrismaClient, BugBountyProgram } from "@prisma/client";
+import { checkUserHasPermissionInBBP } from "../../../common";
 
 const prisma = new PrismaClient()
 
@@ -35,9 +34,10 @@ export default{
 
                     const isPermitted = await checkUserHasPermissionInBBP(request, bugBountyProgramObj.id);
 
-                    if(isPermitted===true){
+                    if(isPermitted!==true){
 
                         resultList.push(null);
+
                     } else {
                         const bbpId = bugBountyProgramObj.id;
 
