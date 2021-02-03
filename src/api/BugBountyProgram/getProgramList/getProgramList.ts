@@ -1,5 +1,6 @@
 import { PrismaClient, BugBountyProgram, Role } from "@prisma/client";
 import { isAuthenticated } from "../../../middleware";
+import { checkUserHasPermissionInBBP } from "src/common";
 
 const prisma = new PrismaClient()
 
@@ -19,32 +20,6 @@ export default{
         getProgramList: async(_, args:any,{request}):Promise<programInfoForPublic|null> => {
             try{
                 
-
-                // get user trustLevel for filtering BBP
-                let userTrustLevel:number = 0;
-                const isAuth:boolean = isAuthenticated(request);
-                if(isAuth===true){
-                    const { 
-                        user:{
-                            id,
-                            role
-                        }
-                    } = request;
-                    if(role===Role.HACKER){
-                        const hackerInfoObj = await prisma.hackerInfo.findOne({
-                            where:{
-                                userId:id
-                            }
-                        })
-
-                        if(hackerInfoObj!==null){
-                            userTrustLevel = hackerInfoObj.trustLevel;
-                        }
-                    }
-
-                }
-
-
                 // if user trust level is lower than required trust level, push null to result list
                 const bugBountyProgramObjList:BugBountyProgram[] = await prisma.bugBountyProgram.findMany({
                     where:{
@@ -53,13 +28,14 @@ export default{
                     }
                 })
 
-
                 let resultList = [] as any;
                 for (const bugBountyProgramObj of bugBountyProgramObjList){
 
-                    const requiredTrustLevel = bugBountyProgramObj.requiredTrustLevel;
+                    //const requiredTrustLevel = bugBountyProgramObj.requiredTrustLevel;
 
-                    if(userTrustLevel<requiredTrustLevel){
+                    const isPermitted = await checkUserHasPermissionInBBP(request, bugBountyProgramObj.id);
+
+                    if(isPermitted===true){
 
                         resultList.push(null);
                     } else {

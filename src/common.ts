@@ -34,7 +34,28 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                             role
                         }
                     } = request;
-                    if(role===Role.HACKER){
+
+                    if(role===Role.ADMIN){
+                        return true;
+                    } else if(role===Role.BUSINESS){
+                        const businessInfoObj = await prisma.businessInfo.findOne({
+                            where:{
+                                userId:id
+                            }
+                        });
+                        if(businessInfoObj!==null){
+                            if(businessInfoObj.companyId===bbpCompanyId){
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        }else{
+                            // business account but no company belonged? error.
+                            return false;
+                        }
+
+                    } else if(role===Role.HACKER){
                         const hackerInfoObj = await prisma.hackerInfo.findOne({
                             where:{
                                 userId:id
