@@ -38,23 +38,31 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                     if(role===Role.ADMIN){
                         return true;
                     } else if(role===Role.BUSINESS){
-                        const businessInfoObj = await prisma.businessInfo.findOne({
-                            where:{
-                                userId:id
-                            }
-                        });
-                        if(businessInfoObj!==null){
-                            if(businessInfoObj.companyId===bbpCompanyId){
-                                return true;
-                            } else {
+
+                        if(userTrustLevel >= requiredTrustLevel){
+                            // BUSINESS can look other BUSINESS bounty if it doesn't require trust level
+                            return true;
+                        } else {
+                            // BUSINESS can look their own bounty program
+
+                            const businessInfoObj = await prisma.businessInfo.findOne({
+                                where:{
+                                    userId:id
+                                }
+                            });
+                            if(businessInfoObj!==null){
+                                if(businessInfoObj.companyId===bbpCompanyId){
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+
+                            }else{
+                                // business account but no company belonged? error.
                                 return false;
                             }
 
-                        }else{
-                            // business account but no company belonged? error.
-                            return false;
                         }
-
                     } else if(role===Role.HACKER){
                         const hackerInfoObj = await prisma.hackerInfo.findOne({
                             where:{
