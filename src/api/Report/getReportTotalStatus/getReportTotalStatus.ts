@@ -7,6 +7,7 @@ const prisma = new PrismaClient()
 interface commentInfo{
     id:String;
     content:String;
+    createdAt:Date;
     writerNickName:String;
     profilePicId:String|null|undefined;
     fileId:String|null;
@@ -110,6 +111,7 @@ export default{
                         id:true,
                         content:true,
                         fileId:true,
+                        createdAt:true,
                         writer:{
                             select:{
                                 nickName:true,
@@ -123,6 +125,7 @@ export default{
                     const commentInfo:commentInfo = {
                         id:commentObj.id,
                         content:commentObj.content,
+                        createdAt:commentObj.createdAt,
                         fileId:commentObj.fileId,
                         profilePicId:commentObj.writer.picId,
                         writerNickName:commentObj.writer.nickName,
