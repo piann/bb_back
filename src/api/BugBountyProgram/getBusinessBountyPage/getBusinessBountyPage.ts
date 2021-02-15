@@ -214,7 +214,7 @@ export default{
                         }
                         
                         const recentResultCode = reportResultObjList[0].resultCode
-                        if(recentResultCode===ResultCode.NOT_VULNERABILITY){
+                        if(recentResultCode===ResultCode.NOT_TARGET_BOUNTY){
                             totalVulnerabilityCount += 1;
                         } else if(recentResultCode===ResultCode.TARGET_BOUNTY){
                             totalVulnerabilityCount += 1;
