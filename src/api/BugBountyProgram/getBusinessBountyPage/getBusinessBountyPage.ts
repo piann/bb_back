@@ -262,9 +262,9 @@ export default{
                             },
                             orderBy:{createdAt:'desc'}
                         });
-                        let resultCode:ResultCode|null = null;
+                        let result:ResultCode|null = null;
                         if (reportResultObjList.length!==0){
-                            resultCode = reportResultObjList[0].resultCode;
+                            result = reportResultObjList[0].resultCode;
                             
                         }
                         
@@ -273,7 +273,7 @@ export default{
                         reportInfoList.push({
                             reportId,
                             status,
-                            resultCode,
+                            result,
                             authorNickName
                         });
     
