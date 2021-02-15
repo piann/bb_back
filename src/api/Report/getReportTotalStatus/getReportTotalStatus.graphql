@@ -1,6 +1,7 @@
 type commentInfo{
     id:String!
     content:String!
+    createdAt:DateTime!
     writerNickName:String!
     profilePicId:String
     fileId:String
