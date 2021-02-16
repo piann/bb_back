@@ -3,6 +3,7 @@ type getReportContentResponse{
     nameId:String!
     profilePicId:String
     authorNickName:String!
+    createdAt:DateTime
     vulName:String
     assetName:String # consider asset is Others
     title:String
