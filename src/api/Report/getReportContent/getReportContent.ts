@@ -9,6 +9,7 @@ fileId:String|null
 nameId:String
 profilePicId:String|null
 authorNickName:String
+createdAt:Date|null;
 vulName:String|null
 assetName:String|null
 title:String|null
@@ -44,6 +45,7 @@ export default{
                         description:true,
                         additionalText:true,
                         dump:true,
+                        createdAt:true,
                         cvssScore:true,
                         target:{
                             select:{
@@ -83,6 +85,7 @@ export default{
                     enviroment,
                     description,
                     dump,
+                    createdAt,
                     cvssScore,
                     target,
                     bugBountyProgram,
@@ -129,6 +132,7 @@ export default{
                     location,
                     enviroment,
                     dump,
+                    createdAt,
                 }
 
                 return res;
