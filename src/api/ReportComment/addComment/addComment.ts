@@ -1,5 +1,6 @@
 import { checkUserHasPermissionReport } from "../../../common";
-import { PrismaClient, ReportComment } from "@prisma/client";
+import { PrismaClient, ReportComment, Role } from "@prisma/client";
+import { sendEmail } from "../../../utils";
 
 const prisma = new PrismaClient()
 
@@ -18,6 +19,7 @@ export default{
                 const {
                      user:{
                         id:uId,
+                        role,
                         } 
                     } = request;
                 
@@ -48,6 +50,15 @@ export default{
                 }
 
 
+                if(role!==Role.ADMIN){
+                    
+                    await sendEmail({
+                        fromInfo:"zerowhale team <no-reply>",
+                        toEmail:"support@pastelplanet.space",
+                        title:"[notification] 리포트에 댓글이 작성되었습니다.",
+                        content:"https://zerowhale.io/report_thread/"+rId,
+                    });
+                }
 
                 return reportCommentObj?.id;
             }catch(err){
