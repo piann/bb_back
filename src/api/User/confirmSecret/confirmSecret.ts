@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { generateToken } from "../../../utils";
+import { generateToken, sendEmail } from "../../../utils";
 
 const prisma = new PrismaClient()
 
@@ -42,7 +42,10 @@ export default{
                         token:null
                     }
                 }
-                const userId = userList[0].id
+                const userId = userList[0].id;
+                const userEmail = userList[0].email;
+                const userNickName = userList[0].nickName;
+                const userRealName = userList[0].realName;
 
                 // change lock status & company           
                 await prisma.user.update({data:{
@@ -59,6 +62,14 @@ export default{
                 where:{userId}
                 })
                 
+
+                await sendEmail({
+                    fromInfo:"zerowhale team <no-reply>",
+                    toEmail:"support@pastelplanet.space",
+                    title:"[notification] 신규 해커가 가입하였습니다.",
+                    content: `Email : ${userEmail}\n이름 : ${userRealName}\nid :${userNickName}`,
+                });
+
                 return {
                     ok:true,
                     error:null,
