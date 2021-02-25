@@ -1,6 +1,7 @@
 import { checkUserHasPermissionInBBP, getBBPIdByNameId } from "../../../common";
 import { PrismaClient, Report, Role } from "@prisma/client";
 import { isAuthenticated } from "../../../middleware";
+import { sendEmail } from "../../../utils";
 
 const prisma = new PrismaClient()
 
@@ -137,6 +138,13 @@ export default{
                     data:{
                         report:{connect:{id:rId}},
                     }
+                });
+
+                await sendEmail({
+                    fromInfo:"zerowhale team <no-reply>",
+                    toEmail:"support@pastelplanet.space",
+                    title:"[notification] 리포트가 제출되었습니다.",
+                    content:"https://zerowhale.io/report_thread/"+rId,
                 });
 
                 return rId;
