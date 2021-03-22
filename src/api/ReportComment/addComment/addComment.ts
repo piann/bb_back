@@ -50,7 +50,78 @@ export default{
                 }
 
 
-                if(role!==Role.ADMIN){
+
+                // "ADMIN comment" should send to HACKER 
+                if(role===Role.ADMIN){
+                    
+                    // get hacker's authorId
+                    const report = await prisma.report.findOne({
+                        where:{
+                            id:rId
+                        }
+                    });
+                        
+                    const authorId = report?.authorId;
+                        
+                    // get hacker's email
+                    const user = await prisma.user.findOne({
+                        where:{
+                            id:authorId
+                        }
+                    });
+                    
+                    if(user === null) return null;
+                    const hackerEmail = user.email;
+                        
+                    await sendEmail({
+                        fromInfo:"zerowhale team <no-reply>",
+                        toEmail:hackerEmail,
+                        title:"[notification] 리포트에 댓글이 작성되었습니다.",
+                        content:"https://zerowhale.io/report_thread/"+rId,
+                    });
+                    
+                }
+
+                // "BUSINESS comment" should send to ADMIN and HACKER
+                if(role===Role.BUSINESS){
+                    
+                    await sendEmail({
+                        fromInfo:"zerowhale team <no-reply>",
+                        toEmail:"support@pastelplanet.space",
+                        title:"[notification] 리포트에 댓글이 작성되었습니다.",
+                        content:"https://zerowhale.io/report_thread/"+rId,
+                    });
+
+                    // get hacker's authorId
+                    const report = await prisma.report.findOne({
+                        where:{
+                            id:rId
+                        }
+                    });
+                        
+                    const authorId = report?.authorId;
+                        
+                    // get hacker's email
+                    const user = await prisma.user.findOne({
+                        where:{
+                            id:authorId
+                        }
+                    });
+                        
+                    if(user === null) return null;
+                    const hackerEmail = user.email;
+                        
+                    await sendEmail({
+                        fromInfo:"zerowhale team <no-reply>",
+                        toEmail:hackerEmail,
+                        title:"[notification] 리포트에 댓글이 작성되었습니다.",
+                        content:"https://zerowhale.io/report_thread/"+rId,
+                    });
+
+                }
+
+                // "HACKER comment" should send to ADMIN
+                if(role===Role.HACKER){
                     
                     await sendEmail({
                         fromInfo:"zerowhale team <no-reply>",
@@ -59,6 +130,7 @@ export default{
                         content:"https://zerowhale.io/report_thread/"+rId,
                     });
                 }
+
 
                 return reportCommentObj?.id;
             }catch(err){
