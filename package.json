@@ -48,10 +48,9 @@
   },
   "scripts": {
     "start": "node ./dist/server.js",
-    "migrate": "npx prisma migrate dev --name anonymous",
-    "up": "npx prisma migrate up --experimental",
+    "migrate": "npx prisma migrate dev",
+    "deploy": "npx prisma migrate deploy",
     "generate": "npx prisma generate",
-    "sync": "yarn migrate && yarn up && yarn generate",
     "dev": "npx nodemon -L --exec \"npx ts-node src/server.ts -e ts,graphql\"",
     "prebuild": "rm -rf dist",
     "build": "tsc",

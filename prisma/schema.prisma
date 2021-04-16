@@ -51,6 +51,7 @@ model User {
   isPhoneVerified               Boolean                  @default(false)
   phoneVerificationSecret       String?
   numberOfPhoneVerificationFail Int                      @default(value: 0)
+  introduction                  String?
   isLocked                      Boolean                  @default(true)
   reasonOfLock                  ReasonOfLock?
   numberOfLoginFail             Int                      @default(value: 0)
