@@ -42,7 +42,7 @@ export default{
                     return null;
                 }
 
-                const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
+                const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findUnique({
                     where:{
                         id:bbpId
                     }
@@ -81,7 +81,7 @@ export default{
                 let ruleValueList = [] as any;
                 for (const ruleConnObj of ruleConnObjList){
                     const pId:number = ruleConnObj.pId; 
-                    const ruleObj:ProgramRule|null = await prisma.programRule.findOne({
+                    const ruleObj:ProgramRule|null = await prisma.programRule.findUnique({
                         where:{id:pId}
                     })
                     if(ruleObj!==null){
@@ -148,7 +148,7 @@ export default{
                 let exclusionValueList = [] as any;
                 for (const exclusionConnObj of exclusionConnObjList){
                     const eId:number = exclusionConnObj.eId; 
-                    const exclusionObj:ProgramRule|null = await prisma.bountyExclusion.findOne({
+                    const exclusionObj:ProgramRule|null = await prisma.bountyExclusion.findUnique({
                         where:{id:eId}
                     })
                     if(exclusionObj!==null){

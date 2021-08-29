@@ -52,7 +52,7 @@ export default{
                             managedBy:undefined,
                         } as any;
                         const cId = bugBountyProgramObj.ownerCompanyId;
-                        const companyObj = await prisma.company.findOne({
+                        const companyObj = await prisma.company.findUnique({
                             where:{id:cId}
                         });
     

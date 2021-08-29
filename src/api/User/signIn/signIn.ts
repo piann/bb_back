@@ -40,7 +40,7 @@ export default{
                     };
 
                 } else {
-                    const user:User|null = await prisma.user.findOne({
+                    const user:User|null = await prisma.user.findUnique({
                         where:{email}
                     });
                     if(user==null){

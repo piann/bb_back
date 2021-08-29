@@ -33,7 +33,7 @@ export default{
                     return null;
                 }
 
-                const reportObj:Report|null = await prisma.report.findOne({
+                const reportObj:Report|null = await prisma.report.findUnique({
                     where:{
                         id:rId
                     }
@@ -47,7 +47,7 @@ export default{
                 // main routine
 
                 const bbpId = reportObj.bbpId;
-                const bbpObj = await prisma.bugBountyProgram.findOne({
+                const bbpObj = await prisma.bugBountyProgram.findUnique({
                     where:{id:bbpId},
                     select:{
                         ownerCompany:{
@@ -66,7 +66,7 @@ export default{
                  } = reportObj;
 
                 
-                const authorObj = await prisma.user.findOne({
+                const authorObj = await prisma.user.findUnique({
                     where:{id:reportObj.authorId}
                 });
                 let authorNickName:string = "";

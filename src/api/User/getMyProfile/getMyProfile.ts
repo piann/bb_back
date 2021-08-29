@@ -59,7 +59,7 @@ export default{
 
                 else if(role===Role.BUSINESS){
 
-                    const businessInfoObj = await prisma.businessInfo.findOne({
+                    const businessInfoObj = await prisma.businessInfo.findUnique({
                         where:{
                             userId:uId
                         }
@@ -67,7 +67,7 @@ export default{
 
                     const companyId = businessInfoObj?.companyId;          
 
-                    const companyObj = await prisma.company.findOne({
+                    const companyObj = await prisma.company.findUnique({
                         where:{
                             id:companyId,
                         }
@@ -87,7 +87,7 @@ export default{
 
                 // get Information Hacker Spec
                 else if(role===Role.HACKER){
-                    const hackerInfoObj = await prisma.hackerInfo.findOne({
+                    const hackerInfoObj = await prisma.hackerInfo.findUnique({
                         where:{
                             userId:uId
                         }
@@ -118,7 +118,7 @@ export default{
                         const submitDate = submittedReport.createdAt;
                         console.log(submittedReport)
                         const vId = submittedReport.vulId;
-                        const vulObj = await prisma.vulnerability.findOne({
+                        const vulObj = await prisma.vulnerability.findUnique({
                             where:{
                                 id:vId
                             }
@@ -128,7 +128,7 @@ export default{
                         const relatedBbpId = submittedReport.bbpId;
                         
     
-                        const bbpObj= await prisma.bugBountyProgram.findOne({
+                        const bbpObj= await prisma.bugBountyProgram.findUnique({
                             where:{id:relatedBbpId},
                             select:{
                                 ownerCompany:{

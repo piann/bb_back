@@ -19,7 +19,7 @@ export default{
                 const uId = key.substring(6,6+25);
                 const passwordResetSecret = key;
 
-                const userObj = await prisma.user.findOne({
+                const userObj = await prisma.user.findUnique({
                     where:{
                         id:uId
                     }

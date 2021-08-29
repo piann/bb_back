@@ -24,7 +24,7 @@ export default{
                     return null;
                 }
 
-                const companyObj = await prisma.company.findOne({
+                const companyObj = await prisma.company.findUnique({
                     where:{
                         id:companyId
                     }

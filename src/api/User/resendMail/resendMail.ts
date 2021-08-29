@@ -9,7 +9,7 @@ export default{
         resendMail: async(_, args:any,{request }):Promise<boolean|null> =>{
             try{
                 const {email} = args;
-                const user = await prisma.user.findOne({
+                const user = await prisma.user.findUnique({
                     where:{
                         email:email
                     }

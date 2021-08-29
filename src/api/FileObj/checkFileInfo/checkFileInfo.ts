@@ -29,7 +29,7 @@ export default{
                     //userId
                 } = args;
 
-                const fileObj = await prisma.fileObj.findOne({
+                const fileObj = await prisma.fileObj.findUnique({
                     where:{
                         id:fileId
                     }

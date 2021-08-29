@@ -30,7 +30,7 @@ export default{
                     return null;
                 }
 
-                const reportObj:any= await prisma.report.findOne({
+                const reportObj:any= await prisma.report.findUnique({
                     where:{id:rId},
                     select:{
                         fileId:true,
