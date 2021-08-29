@@ -140,6 +140,7 @@ model BugBountyProgram {
   ProgramRuleConnBugBountyProgram     ProgramRuleConnBugBountyProgram[]
   BountyExclusionConnBugBountyProgram BountyExclusionConnBugBountyProgram[]
   ReportTipConnBugBountyProgram       ReportTipConnBugBountyProgram[]
+  RegulationConnBugBountyProgram       RegulationConnBugBountyProgram[]
 }
 
 model PrivateProgramConnUser {
@@ -225,6 +226,25 @@ model ReportTip {
 model ReportTipConnBugBountyProgram {
   id               String           @id @default(cuid())
   reportTip        ReportTip        @relation(fields: [rId], references: [id])
+  rId              Int
+  bugBountyProgram BugBountyProgram @relation(fields: [bId], references: [id])
+  bId              String
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @default(now()) @updatedAt
+}
+
+model Regulation {
+  id                            Int                             @id @default(autoincrement())
+  value                         String
+  note                          String?
+  createdAt                     DateTime                        @default(now())
+  updatedAt                     DateTime                        @default(now()) @updatedAt
+  RegulationConnBugBountyProgram RegulationConnBugBountyProgram[]
+}
+
+model RegulationConnBugBountyProgram {
+  id               String           @id @default(cuid())
+  regulation        Regulation        @relation(fields: [rId], references: [id])
   rId              Int
   bugBountyProgram BugBountyProgram @relation(fields: [bId], references: [id])
   bId              String
