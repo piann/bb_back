@@ -28,7 +28,7 @@ export default{
                 if(await checkUserHasPermissionInBBP(request,bbpId)!==true){
                     return null;
                 }
-                const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
+                const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findUnique({
                     where:{
                         id:bbpId
                     }
@@ -41,7 +41,7 @@ export default{
                 
                 // main logic
                 const cId = bugBountyProgramObj.ownerCompanyId
-                const companyObj = await prisma.company.findOne({
+                const companyObj = await prisma.company.findUnique({
                     where:{id:cId}
                 });
                 if(companyObj===null){

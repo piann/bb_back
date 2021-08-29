@@ -40,7 +40,7 @@ export default{
                     return null;
                 }
 
-                const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
+                const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findUnique({
                     where:{
                         id:bbpId
                     }
@@ -77,7 +77,7 @@ export default{
                 let reportTipList = [] as any;
                 for (const reportTipConnObj of reportTipConnObjList){
                     const rId:number = reportTipConnObj.rId; 
-                    const reportTipObj:ReportTip|null = await prisma.reportTip.findOne({
+                    const reportTipObj:ReportTip|null = await prisma.reportTip.findUnique({
                         where:{id:rId}
                     })
                     if(reportTipObj!==null){

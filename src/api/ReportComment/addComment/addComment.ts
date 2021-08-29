@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 
 export default{
     Mutation:{
-        addComment: async(_, args:any,{request}):Promise<string|null> =>{
+        addComment: async(_, args:any,{request}):Promise<string|undefined|null> =>{
             try{
 
                 const {
@@ -55,7 +55,7 @@ export default{
                 if(role===Role.ADMIN){
                     
                     // get hacker's authorId
-                    const report = await prisma.report.findOne({
+                    const report = await prisma.report.findUnique({
                         where:{
                             id:rId
                         }
@@ -64,7 +64,7 @@ export default{
                     const authorId = report?.authorId;
                         
                     // get hacker's email
-                    const user = await prisma.user.findOne({
+                    const user = await prisma.user.findUnique({
                         where:{
                             id:authorId
                         }
@@ -93,7 +93,7 @@ export default{
                     });
 
                     // get hacker's authorId
-                    const report = await prisma.report.findOne({
+                    const report = await prisma.report.findUnique({
                         where:{
                             id:rId
                         }
@@ -102,7 +102,7 @@ export default{
                     const authorId = report?.authorId;
                         
                     // get hacker's email
-                    const user = await prisma.user.findOne({
+                    const user = await prisma.user.findUnique({
                         where:{
                             id:authorId
                         }

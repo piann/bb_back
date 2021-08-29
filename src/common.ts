@@ -11,7 +11,7 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
         if(bbpId===null||bbpId===undefined){
             return null;
         }
-        const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
+        const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findUnique({
             where:{
                 id:bbpId
             }
@@ -45,7 +45,7 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                         } else {
                             // BUSINESS can look their own bounty program
 
-                            const businessInfoObj = await prisma.businessInfo.findOne({
+                            const businessInfoObj = await prisma.businessInfo.findUnique({
                                 where:{
                                     userId:id
                                 }
@@ -64,7 +64,7 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
 
                         }
                     } else if(role===Role.HACKER){
-                        const hackerInfoObj = await prisma.hackerInfo.findOne({
+                        const hackerInfoObj = await prisma.hackerInfo.findUnique({
                             where:{
                                 userId:id
                             }
@@ -93,7 +93,7 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                 return false;
             }
             const { user:{id:uId} } = request;
-            const user:User|null = await prisma.user.findOne({
+            const user:User|null = await prisma.user.findUnique({
                 where:{id:uId}
             });
             const role = user?.role;
@@ -120,7 +120,7 @@ export const checkUserHasPermissionInBBP = async (request:any, bbpId:string):Pro
                 }
 
            } else if (role===Role.BUSINESS){
-                const businessInfoObj:BusinessInfo|null = await prisma.businessInfo.findOne({
+                const businessInfoObj:BusinessInfo|null = await prisma.businessInfo.findUnique({
                     where:{
                         userId:uId
                     }
@@ -165,7 +165,7 @@ export const checkUserHasPermissionReport = async (request:any, rId:string):Prom
         } = request;
 
 
-        const reportObj = await prisma.report.findOne({
+        const reportObj = await prisma.report.findUnique({
             where:{
                 id:rId
             },
@@ -225,7 +225,7 @@ export const checkUserHasPermissionReport = async (request:any, rId:string):Prom
             // compare user company with report owning company
             const reportOwnerCompanyId = reportObj.bugBountyProgram.ownerCompanyId;
 
-            const bInfoObj = await prisma.businessInfo.findOne({
+            const bInfoObj = await prisma.businessInfo.findUnique({
                 where:{
                     userId:uId
                 },

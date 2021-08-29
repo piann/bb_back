@@ -25,7 +25,7 @@ export default{
                     return null;
                 }
                 /*
-                const userObj:User|null = await prisma.user.findOne({
+                const userObj:User|null = await prisma.user.findUnique({
                     where:{id:userId}
                 })
                 

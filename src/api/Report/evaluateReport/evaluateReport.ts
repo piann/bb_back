@@ -44,7 +44,7 @@ export default{
                 });
 
                 if(grantedCredit!==null && grantedCredit!==undefined){
-                    const reportObj = await prisma.report.findOne({
+                    const reportObj = await prisma.report.findUnique({
                         where:{
                             id:rId
                         },

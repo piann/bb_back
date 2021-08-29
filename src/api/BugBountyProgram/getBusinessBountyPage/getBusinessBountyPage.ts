@@ -62,7 +62,7 @@ export default{
                 if(bbpId==undefined && nameId!==undefined){
                     
                     // if there is no company of such nameId, return null
-                    const companyObj:Company|null = await prisma.company.findOne({
+                    const companyObj:Company|null = await prisma.company.findUnique({
                         where:{
                             nameId
                         }
@@ -132,7 +132,7 @@ export default{
                 // 3. if exist bugbounty program in progress
                 else{
 
-                    const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findOne({
+                    const bugBountyProgramObj:BugBountyProgram|null = await prisma.bugBountyProgram.findUnique({
                         where:{
                             id:bbpId
                         }
@@ -233,7 +233,7 @@ export default{
     
                     for (const submittedReport of submittedReportList){
                         const reportId = submittedReport.id;
-                        const authorObj = await prisma.user.findOne({
+                        const authorObj = await prisma.user.findUnique({
                             where:{id:submittedReport.authorId}
                         });
                         let authorNickName:string|null = null;

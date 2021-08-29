@@ -28,7 +28,7 @@ export default{
 
                 if(role===Role.HACKER){
                     // if hacker, check report author is caller
-                    const reportObj = await prisma.report.findOne({
+                    const reportObj = await prisma.report.findUnique({
                         where:{
                             id:reportId
                         }
